@@ -1,0 +1,333 @@
+@use 'sass:math';
+
+.modal-dialog {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: $z-space;
+  background-color: rgba($c-black, 0.5);
+  animation: fade-in $ease-dur $ease-balance forwards;
+
+  &__box {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-right: $s-gutter;
+    margin-left: $s-gutter;
+
+    &.dialog-banner {
+      top: unset;
+      margin: 0 -1.6rem;
+      background-color: #fff2f2;
+      animation: banner-fade-in $ease-dur * 3 $ease-out forwards;
+    }
+  }
+
+  &__frame {
+    position: relative;
+    box-sizing: border-box;
+    width: 34.3rem;
+    max-width: 34.3rem;
+    padding: $s-gutter;
+    border-radius: 1rem;
+
+    background-color: #252525;
+    box-shadow: 0 0 1rem 0 rgba($c-black, 0.5);
+
+    font-size: $f-abstract;
+    color: $c-white;
+    text-align: center;
+
+    &.dialog-account {
+      width: 100%;
+      max-width: 60rem;
+    }
+
+    &.dialog-hibernated {
+      width: 100%;
+      max-width: 48rem;
+      padding: $s-gutter-large;
+      text-align: start;
+    }
+  }
+
+  &__title {
+    display: block;
+  }
+
+  &__close {
+    @include transition();
+    position: absolute;
+    top: 0.7rem;
+    right: $s-gutter-half;
+
+    width: 1.5rem;
+    height: 1.5rem;
+    padding: 2rem;
+
+    &:hover,
+    &:focus {
+      transform: rotate(90deg);
+    }
+
+    &::before,
+    &::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+
+      width: 1.5rem;
+      height: 0.1rem;
+
+      background-color: $c-white;
+    }
+
+    &::before {
+      transform: translate(-50%, -50%) rotate(-45deg);
+    }
+
+    &::after {
+      transform: translate(-50%, -50%) rotate(45deg);
+    }
+  }
+
+  &__scroll {
+    overflow-y: scroll;
+    max-height: 60vh;
+    margin-top: $s-gutter;
+    padding: $s-gutter;
+    border-radius: 1rem;
+
+    background-color: $c-background;
+    font-size: $f-contents;
+    text-align: left;
+    word-break: normal;
+
+    &::-webkit-scrollbar {
+      width: 1rem;
+
+      &-track {
+        background-color: transparent;
+      }
+
+      &-thumb {
+        border-radius: 1rem;
+        background-color: lighten($c-background, 30%);
+      }
+    }
+  }
+
+  &__desc {
+    margin-top: 3.4rem;
+
+    font-size: $f-contents;
+  }
+
+  &__link {
+    font-size: $c-primary;
+    color: $c-primary;
+  }
+
+  &__btn {
+    margin-top: $s-gutter;
+    font-size: $f-contents;
+
+    &--row {
+      display: flex;
+
+      margin-right: -$s-gutter-half;
+      margin-left: -$s-gutter-half;
+
+      .btn {
+        width: 100%;
+        min-width: auto;
+        margin-right: $s-gutter-half;
+        margin-left: $s-gutter-half;
+      }
+    }
+
+    .btn--wide + .btn--wide {
+      margin-top: $s-gutter;
+    }
+  }
+
+  .checkbox {
+    padding: $s-gutter 0 0 0;
+    font-size: $f-footnote;
+    color: $c-emphasis;
+    text-align: left;
+  }
+
+  mark {
+    background-color: transparent;
+
+    font-weight: bold;
+    color: inherit;
+    text-decoration: underline;
+  }
+
+  em {
+    color: $c-secondary;
+    text-decoration: underline;
+  }
+
+  @include mq($large) {
+    &__box {
+      top: 50%;
+
+      transform: translateY(-50%);
+
+      &.dialog-banner {
+        bottom: -50%;
+      }
+    }
+  }
+}
+
+.dialog-banner {
+  &__frame {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    max-width: unset;
+    padding: 3.45rem 0;
+    border-radius: 0;
+    background-color: transparent;
+    box-shadow: unset;
+
+    .btn-group {
+      margin-top: 0;
+    }
+
+    .btn {
+      min-width: 8.5rem;
+      margin: 0 0.6rem;
+    }
+
+    .btn--secondary {
+      border: none;
+    }
+  }
+
+  &__desc {
+    margin-top: 0;
+    font-size: $f-contents;
+    color: $c-background;
+    text-align: center;
+
+    a {
+      display: inline-block;
+      margin-left: $s-gutter-quarter;
+      color: $c-primary;
+      text-decoration: underline;
+    }
+  }
+
+  @include mq($until: $large) {
+    &__frame {
+      flex-direction: column;
+      padding: $s-gutter-small-double 0;
+
+      .btn-group {
+        margin-top: $s-gutter-large;
+      }
+    }
+  }
+
+  @include mq($large) {
+    &__desc {
+      margin-right: $s-gutter-contents-large;
+      text-align: left;
+    }
+  }
+}
+
+.toast-ui {
+  position: fixed;
+  bottom: $s-gutter;
+  left: 50%;
+  z-index: 1002;
+  width: calc(100% - #{$s-gutter} * 2);
+  transform: translateX(-50%);
+
+  &__block {
+    position: relative;
+    overflow: hidden;
+    padding: 1.8rem $s-gutter 2.1rem;
+    border-radius: 1rem;
+    background-color: #4d4d4d;
+    animation: slide-up $ease-dur $ease-balance forwards, slide-down $ease-dur $ease-balance $ease-dur * 12 forwards;
+
+    & + & {
+      margin-top: 1rem;
+    }
+  }
+
+  &__item {
+    position: relative;
+    z-index: $z-floor;
+    display: flex;
+    font-size: $f-contents;
+    color: $c-emphasis;
+  }
+
+  .icon {
+    vertical-align: middle;
+    margin-top: -0.1rem;
+    margin-right: 1.1rem;
+
+    &--confirm {
+      path {
+        animation: icon-confirm $ease-dur * 6 $ease-balance forwards;
+        stroke-dashoffset: 20;
+        stroke-dasharray: 20;
+      }
+    }
+
+    &--reject {
+      circle:first-child {
+        box-sizing: border-box;
+
+        stroke: $c-primary;
+
+        animation: icon-reject $ease-dur * 6 $ease-balance forwards;
+        stroke-width: 0.1rem;
+
+        ~ rect,
+        ~ circle {
+          opacity: 0;
+
+          animation: icon-blink $ease-dur * 6 $ease-balance forwards;
+        }
+      }
+    }
+  }
+
+  .v-enter,
+  .v-leave-to {
+    opacity: 0;
+  }
+
+  .v-enter {
+    transform: translateY(100%);
+  }
+
+  .v-enter-active,
+  .v-leave-active {
+    transition: all 0.3s ease;
+  }
+
+  @include mq($large) {
+    max-width: 720px;
+  }
+}

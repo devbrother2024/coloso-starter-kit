@@ -1,0 +1,109 @@
+@use 'sass:math';
+
+.site-select-box {
+  position: relative;
+  width: 100%;
+  min-width: 26.2rem;
+  max-width: 32.4rem;
+  padding-bottom: 1rem;
+  font-size: 1.4rem;
+  color: #fff;
+  user-select: none;
+
+  &__selector {
+    display: flex;
+    align-items: center;
+    width: inherit;
+    min-width: inherit;
+    max-width: inherit;
+    height: 4rem;
+    padding-left: 2rem;
+    border-radius: 4px;
+    background: #4d4d4d;
+    color: inherit;
+    text-align: left;
+    cursor: pointer;
+  }
+
+  ul {
+    left: 0.8rem;
+    width: inherit;
+    min-width: inherit;
+    max-width: inherit;
+  }
+
+  strong {
+    width: 100%;
+    text-transform: capitalize;
+  }
+
+  .icon-arrow {
+    min-width: 1.7rem;
+    margin-right: 1.8rem;
+    path {
+      stroke: #f9858d;
+    }
+  }
+
+  &__a {
+    display: block;
+    box-sizing: border-box;
+    width: 100%;
+    padding-top: 0.8rem;
+    padding-bottom: 0.8rem;
+    text-transform: capitalize;
+    cursor: pointer;
+  }
+
+  .icon-globe {
+    min-width: 1.6rem;
+    margin-right: 1.2rem;
+    margin-left: 2rem;
+  }
+
+  &__list {
+    @include transition();
+    position: absolute;
+    top: 5.2rem;
+    left: 3%;
+    z-index: $z-cloud;
+    display: none;
+    box-sizing: border-box;
+    width: 26.2rem;
+    min-width: 15.4rem;
+    max-width: 30.8rem;
+    margin-top: math.div(-$s-gutter, 2);
+    margin-left: math.div(-$s-gutter, 2);
+    padding-right: 1.6rem;
+    padding-left: 1.6rem;
+    border-radius: 0.4rem;
+    background-color: #4d4d4d;
+    white-space: nowrap;
+  }
+
+  &__list-item {
+    &:hover {
+      @include transition();
+      color: #f9858d;
+    }
+
+    &:nth-child(n + 2):nth-child(-n + 3) {
+      border-top: 1px solid $c-disabled;
+    }
+  }
+
+  &:hover {
+    .icon-arrow {
+      @include arrow-turn-up();
+    }
+  }
+
+  &:hover &__list {
+    display: block;
+  }
+
+  @include mq($until: $medium) {
+    min-width: 100%;
+    max-width: none;
+  }
+}

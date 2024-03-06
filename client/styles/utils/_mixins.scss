@@ -1,0 +1,184 @@
+@use 'sass:math';
+@use 'sass:map';
+
+/*
+* Mixins
+*/
+
+@mixin mq($bp: $small, $until: null) {
+  @if ($until) {
+    @media (max-width: $until - 1px) {
+      @content;
+    }
+  } @else {
+    @media (min-width: $bp) {
+      @content;
+    }
+  }
+}
+
+@mixin grid($size: null) {
+  padding-right: $s-gutter-small-double;
+  padding-left: $s-gutter-small-double;
+
+  @include mq($large) {
+    margin-right: auto;
+    margin-left: auto;
+
+    @if ($size) {
+      max-width: $size;
+      padding-right: percentage(math.div($s-gutter-small-double * 2, $size));
+      padding-left: percentage(math.div($s-gutter-small-double * 2, $size));
+    } @else {
+      max-width: map-get($grids, medium);
+      padding-right: percentage(math.div($s-gutter-small-double * 2, map-get($grids, medium)));
+      padding-left: percentage(math.div($s-gutter-small-double * 2, map-get($grids, medium)));
+    }
+  }
+}
+
+@mixin container($size: null) {
+  @include grid($size);
+}
+
+@mixin grid-layout() {
+  $col: 12;
+  $col-qt: 3.2rem;
+
+  display: flex;
+
+  margin-right: calc(#{$col-qt} / -2);
+  margin-left: calc(#{$col-qt} / -2);
+
+  [class^='col'] {
+    box-sizing: border-box;
+    padding-right: calc(#{$col-qt} / 2);
+    padding-left: calc(#{$col-qt} / 2);
+  }
+
+  @for $i from 1 through $col {
+    .col-#{$i} {
+      flex-basis: math.div(100%, $col) * $i;
+    }
+  }
+}
+
+@mixin full-layer {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+@mixin flex-middle() {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin a11y {
+  position: absolute !important;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+
+  width: 1px;
+  height: 1px;
+
+  white-space: nowrap;
+}
+
+@mixin label-style {
+  @include flex-middle();
+  vertical-align: top;
+  box-sizing: border-box;
+  height: 2.6rem;
+  margin-right: $s-gutter-half;
+  margin-bottom: $s-gutter-half;
+  padding: 0.2rem $s-gutter-half;
+  border: 0.1rem solid transparent;
+  border-radius: 0.4rem;
+  background-color: #595959;
+  font-style: normal;
+  color: $c-white;
+
+  @include mq($small) {
+    margin-bottom: $s-gutter;
+  }
+}
+
+@mixin transition($prop: null, $time: null, $func: null) {
+  @if ($prop) {
+    transition-property: $prop;
+  } @else {
+    transition-property: all;
+  }
+
+  @if ($time) {
+    transition-duration: $time;
+  } @else {
+    transition-duration: $ease-dur;
+  }
+
+  @if ($func) {
+    transition-timing-function: $func;
+  } @else {
+    transition-timing-function: $ease-basic;
+  }
+}
+
+@mixin ellipsis($lines: null) {
+  @if ($lines) {
+    display: block;
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: $lines;
+
+    text-overflow: ellipsis;
+    word-wrap: normal;
+  } @else {
+    display: inline-block;
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    word-wrap: normal;
+  }
+}
+
+@mixin theme {
+  box-sizing: border-box;
+  min-height: 100vh;
+  padding-top: $s-header-tablet;
+  font-size: $f-contents;
+
+  @include mq($large) {
+    padding-top: $s-header-laptop;
+  }
+}
+
+@mixin page-theme($size, $color: inherit) {
+  padding-bottom: map-get($theme-size, $size);
+  background-color: map-get($theme-color, $color);
+}
+
+@mixin curation-theme {
+  section ~ section {
+    margin-top: 4rem;
+  }
+
+  .carousel-wide + .carousel-wide {
+    margin-top: $s-gutter;
+  }
+
+  @include mq($large) {
+    section ~ section {
+      margin-top: $s-gutter-contents-medium;
+    }
+
+    .carousel-wide + .carousel-wide {
+      margin-top: $s-gutter-small-double;
+    }
+  }
+}

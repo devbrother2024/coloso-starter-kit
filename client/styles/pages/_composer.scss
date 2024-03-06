@@ -1,0 +1,267 @@
+.fc-layout {
+  .card {
+    &__title {
+      height: inherit;
+      color: inherit;
+    }
+  }
+}
+
+.fc-layout-513,
+.fc-layout-215 {
+  .container {
+    &__error {
+      color: red;
+      text-align: center;
+    }
+  }
+
+  .card {
+    &__badge {
+      font-family: aRocket, sans-serif;
+    }
+
+    &__error {
+      &::after {
+        content: '페이지의 상태, 시작일, 종료일을 확인해주세요.';
+        position: absolute;
+        top: 0;
+        display: flex;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(red, 0.7);
+        font-weight: bold;
+        font-size: 1.4rem;
+        color: #fff;
+        text-align: center;
+      }
+    }
+
+    &__labels {
+      height: 2.5rem;
+      padding-top: 0;
+      padding-bottom: 0;
+      border-bottom: none;
+      font-weight: normal;
+    }
+
+    &__title {
+      padding-top: 0;
+      padding-bottom: 0;
+    }
+
+    @include mq($small) {
+      &__labels {
+        padding-top: 0;
+        padding-bottom: 0;
+        font-weight: normal;
+      }
+
+      &__title {
+        padding-top: 0;
+      }
+    }
+  }
+}
+
+.fc-layout-215 {
+  .carousel {
+    &__cards {
+      gap: 2rem;
+    }
+  }
+}
+
+.fc-layout-909 {
+  .container {
+    @media (max-width: 720px) {
+      flex-direction: column;
+
+      &__title {
+        text-align: center;
+      }
+
+      &__content {
+        text-align: center;
+      }
+
+      &__top {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+  }
+}
+
+.fc-layout-910 {
+  $c-black: #000;
+  $c-dark: #121212;
+  $c-light: #fff;
+  $c-primary: #ed2040;
+
+  .container {
+    &__button {
+      text-align: center;
+    }
+
+    &__title {
+      margin-bottom: 3rem;
+    }
+
+    [data-content='true'] {
+      margin-bottom: 0.8rem;
+    }
+  }
+
+  .coupon {
+    word-break: keep-all;
+    transform: translate3d(0, 0, 0);
+
+    &--hidden {
+      display: none;
+    }
+
+    &__container {
+      backface-visibility: hidden;
+
+      @at-root .is--disabled#{&} {
+        filter: blur(0.1rem) brightness(0.25);
+      }
+    }
+
+    &__item {
+      position: relative;
+      transform-style: preserve-3d;
+      transform: rotateY(-180deg);
+      will-change: auto;
+
+      @at-root .is--activate#{&} {
+        transition: all 0.8s;
+
+        @for $i from 1 through 40 {
+          &:nth-child(#{$i}) {
+            transition-delay: $i * 0.1s;
+            transform: rotateY(0deg);
+          }
+        }
+      }
+
+      @at-root .is--disabled#{&} {
+        &::after {
+          content: attr(data-disabled-label);
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin: auto;
+          padding: 0.4rem 1.2rem;
+          border: 0.4rem solid darken($c-primary, 20);
+          border-radius: 0.4rem;
+          font-weight: 700;
+          font-size: 2rem;
+          color: darken($c-primary, 20);
+          white-space: nowrap;
+          transform: translate3d(-50%, -50%, 0) rotate(-30deg);
+        }
+      }
+    }
+
+    &__inner {
+      position: relative;
+      backface-visibility: hidden;
+
+      &--backface {
+        position: absolute;
+        inset: 0;
+        z-index: 10;
+        transform: rotateY(-180deg);
+
+        .coupon__label {
+          text-align: center;
+        }
+      }
+    }
+
+    &__remaining {
+      &[data-remaining]::before {
+        article.catalog-contents & {
+          content: attr(data-remaining) ' : ';
+          font-weight: normal;
+        }
+      }
+
+      &[data-ea]::after {
+        article.catalog-contents & {
+          content: attr(data-ea);
+          font-weight: normal;
+        }
+      }
+
+      &--space {
+        margin-top: 2rem;
+      }
+    }
+
+    &__name {
+      p {
+        @include ellipsis(2);
+        word-break: normal;
+      }
+    }
+
+    @include mq($until: $large) {
+      &__item:not(:only-child) {
+        .coupon__name {
+          p {
+            @include ellipsis(1);
+            font-size: inherit;
+          }
+        }
+      }
+    }
+  }
+
+  .coupon-btn {
+    width: 30rem;
+    height: 4.8rem;
+    padding: 1.4rem 0;
+    border-radius: 0.5rem;
+    background-color: $c-primary;
+    font-weight: bold;
+    color: $c-light;
+
+    &[disabled] {
+      border: 0.1rem solid currentColor;
+      background-color: transparent;
+      filter: brightness(0.25);
+      cursor: not-allowed;
+    }
+
+    &[data-voucher-state='fetching'] {
+      cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='40' height='48' viewport='0 0 100 100' style='fill:black;font-size:24px;'><text y='50%'>💬</text></svg>")
+          16 0,
+        auto;
+    }
+
+    &[data-voucher-state='sold-out'] {
+      cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='40' height='48' viewport='0 0 100 100' style='fill:black;font-size:24px;'><text y='50%'>😭</text></svg>")
+          16 0,
+        auto;
+    }
+
+    &[data-voucher-state='completed'] {
+      cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='80' height='48' viewport='0 0 100 100' style='fill:black;font-size:24px;'><text y='50%'>😆😍</text></svg>")
+          32 0,
+        auto;
+    }
+
+    .button-cta__text {
+      font-size: 1.4rem;
+    }
+  }
+}

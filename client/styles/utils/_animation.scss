@@ -1,0 +1,229 @@
+@use 'sass:math';
+
+/*
+* Animation
+*/
+
+@mixin rotate-animate($name, $from, $to, $rotate: 0) {
+  @keyframes #{$name} {
+    0% {
+      opacity: 0;
+      transform: translate3d(0, $from, 0) rotate($rotate);
+    }
+    100% {
+      opacity: 1;
+      transform: translate3d(0, $to, 0) rotate($rotate);
+    }
+  }
+}
+
+@keyframes zoom-out {
+  from {
+    transform: scale(1.05);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+@include rotate-animate(arrow-fade-in, $s-gutter-half, 0, 180deg);
+@include rotate-animate(arrow-fade-out, -$s-gutter-half, 0, 0);
+@include rotate-animate(banner-fade-in, 100%, 0, 0);
+
+@keyframes swipe-menu {
+  from {
+    transform: translate3d(50%, 0, 0);
+  }
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes dropdown-menu {
+  from {
+    opacity: 0;
+    transform: translate3d(-50%, -$s-gutter-half, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes blur-out {
+  from {
+    filter: blur(0.5rem);
+  }
+  to {
+    filter: blur(0);
+  }
+}
+
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translate3d(0%, $s-gutter-half, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0%, 0, 0);
+  }
+}
+
+@keyframes slide-down {
+  from {
+    opacity: 1;
+    transform: translate3d(0%, 0, 0);
+  }
+  to {
+    opacity: 0;
+    transform: translate3d(0%, $s-gutter-half, 0);
+  }
+}
+
+@keyframes heart-beat {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(1.75);
+  }
+}
+
+@keyframes icon-confirm {
+  from {
+    stroke-dashoffset: 20;
+    stroke-dasharray: 20;
+  }
+  to {
+    stroke-dashoffset: 0;
+    stroke-dasharray: 20;
+  }
+}
+
+@keyframes icon-reject {
+  0% {
+    fill: transparent;
+    stroke-dashoffset: 50;
+    stroke-dasharray: 50;
+  }
+  75% {
+    fill: transparent;
+    stroke-dashoffset: 0;
+    stroke-dasharray: 50;
+  }
+  100% {
+    fill: $c-primary;
+    stroke-dashoffset: 0;
+    stroke-dasharray: 50;
+  }
+}
+
+@keyframes icon-blink {
+  0% {
+    opacity: 0;
+  }
+  34% {
+    opacity: 0;
+  }
+  35% {
+    opacity: 1;
+  }
+  45% {
+    opacity: 0;
+  }
+  74% {
+    opacity: 0;
+  }
+  75% {
+    opacity: 1;
+  }
+  85% {
+    opacity: 0;
+  }
+  94% {
+    opacity: 0;
+  }
+  95% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes shrinkX {
+  from {
+    transform: translateX(0%);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes draw-backdrop {
+  from {
+    transform: translateX(-50%) scaleY(0);
+  }
+  to {
+    transform: translateX(-50%) scaleY(1);
+  }
+}
+
+@keyframes narrow-backdrop {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes filter-dropdown {
+  from {
+    transform: scaleY(1);
+  }
+  to {
+    transform: scaleY(0);
+  }
+}
+
+@keyframes rotate-skeleton {
+  from {
+    transform: translate3d(-50%, -50%, 0) rotate(0deg);
+  }
+  to {
+    transform: translate3d(-50%, -50%, 0) rotate(360deg);
+  }
+}
+
+@keyframes gradient {
+  0%,
+  20% {
+    background-position: 0 50%;
+  }
+  25%,
+  65% {
+    background-position: 100% 50%;
+  }
+  70%,
+  100% {
+    background-position: 0 50%;
+  }
+}
+
+@mixin arrow-turn-up {
+  $dropdown-props: $ease-dur $ease-balance forwards;
+  animation: arrow-fade-in $dropdown-props;
+}

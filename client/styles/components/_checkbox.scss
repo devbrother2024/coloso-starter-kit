@@ -1,0 +1,40 @@
+@use 'sass:math';
+
+.checkbox {
+  display: inline-flex;
+  margin-left: -$s-gutter-half;
+  padding: $s-gutter-half;
+
+  &__icon {
+    @include transition();
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 1.7rem;
+    height: 1.7rem;
+    border-radius: 0.3rem;
+    box-shadow: 0 0 0 0.1rem $c-strong;
+
+    svg {
+      @include transition($func: linear);
+      transition-delay: math.div($ease-dur, 2);
+      transform: translateY(-0.1rem);
+      stroke-dashoffset: 20;
+      stroke-dasharray: 20;
+    }
+
+    .checkbox__trigger:checked ~ & {
+      background-color: $c-primary;
+      box-shadow: 0 0 0 0.1rem $c-primary;
+
+      svg {
+        stroke-dashoffset: 0;
+        stroke-dasharray: 20;
+      }
+    }
+  }
+
+  &__label {
+    padding-left: $s-gutter-half;
+  }
+}

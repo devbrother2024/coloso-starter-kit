@@ -1,0 +1,44 @@
+.content-loader {
+  position: relative;
+  display: block;
+
+  box-sizing: border-box;
+  padding-top: var(--response-ratio);
+
+  svg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    vertical-align: top;
+
+    transform: translate3d(-50%, -50%, 0);
+  }
+
+  circle {
+    animation: loader 1s infinite;
+
+    &:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+
+    &:last-child {
+      animation-delay: 0.4s;
+    }
+  }
+
+  @include mq($medium) {
+    padding-top: var(--primary-ratio);
+  }
+}
+
+@keyframes loader {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+  100% {
+    opacity: 1;
+  }
+}

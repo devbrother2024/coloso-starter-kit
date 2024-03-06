@@ -1,0 +1,193 @@
+@use 'sass:math';
+
+/*
+* common
+*/
+
+body {
+  overflow-x: hidden;
+  background-color: $c-background;
+  color: $c-foreground;
+  scrollbar-gutter: stable both-edges;
+
+  &::-webkit-scrollbar {
+    width: 1rem;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: $c-background;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 1rem;
+    background-color: lighten($c-background, 30%);
+  }
+
+  &.is--active-modal {
+    overflow: hidden;
+  }
+
+  @include mq($until: $large) {
+    &.is--active-nav {
+      overflow: hidden;
+    }
+  }
+}
+
+.__main {
+  @include theme;
+}
+
+.theme--main {
+  @include theme;
+  @include page-theme(medium);
+  @include curation-theme;
+
+  @include mq($large) {
+    @include page-theme(large);
+  }
+}
+
+.theme--catalog {
+  @include theme;
+
+  @include mq($until: $large) {
+    & + .footer {
+      padding-bottom: 7rem;
+    }
+  }
+}
+
+.theme--me {
+  @include theme;
+  flex: 1;
+
+  @include mq($until: $large) {
+    @include page-theme(small, pale);
+  }
+  @include mq($large) {
+    background-image: linear-gradient(to left, $c-search 50%, $c-dark 50%);
+  }
+}
+
+.theme--board {
+  @include theme;
+  @include page-theme(medium, pale);
+
+  @include mq($large) {
+    @include page-theme(large);
+  }
+}
+
+.theme--account {
+  @include theme;
+  @include transition();
+  background-color: linear-gradient(210deg, $c-black, #2c2a2f);
+  display: flex;
+
+  &:focus-within {
+    background: linear-gradient(210deg, $c-black, #35026a, #488ff7);
+    background-size: 400% 400%;
+  }
+
+  &__content {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-top: $s-gutter-contents-small;
+    padding-bottom: $s-gutter-contents-large;
+    background-color: $c-foreground;
+  }
+
+  .grid--x-small {
+    width: 34.3rem;
+  }
+
+  @include mq($large) {
+    background-position: 50%;
+    background-size: cover;
+
+    &::before {
+      content: '';
+      flex: 1;
+    }
+  }
+  @include mq($until: $medium) {
+    .grid--x-small {
+      box-sizing: border-box;
+      width: 100%;
+    }
+  }
+}
+
+.theme--search {
+  @include theme;
+  @include page-theme(medium, white);
+  min-height: auto;
+  padding-top: $s-header-mobile;
+  color: $c-black;
+
+  @include mq($large) {
+    padding-top: $s-header-laptop;
+    @include page-theme(large, white);
+  }
+}
+
+.theme--category {
+  @include theme;
+  @include page-theme(medium, white);
+  @include curation-theme;
+  color: $c-dark;
+
+  @include mq($large) {
+    @include page-theme(large);
+  }
+}
+
+.skip-to-content {
+  position: absolute;
+  top: $s-gutter-half;
+  left: $s-gutter-quarter;
+  z-index: $z-space + 10;
+
+  padding: $s-gutter;
+  border-radius: 0.4rem;
+
+  background-color: $c-primary;
+  opacity: 0;
+
+  font-size: $f-contents;
+  color: $c-foreground;
+
+  transform: translateY(-200%);
+
+  &:focus {
+    opacity: 1;
+    transform: translateY(0%);
+  }
+}
+
+.responsive-picture {
+  display: block;
+  width: 100%;
+}
+
+.fc-layout {
+  .container {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+
+    @include mq($large) {
+      max-width: $g-large;
+      margin: 0 auto;
+    }
+  }
+}
+
+i.icon {
+  display: inline-flex;
+  align-items: center;
+}

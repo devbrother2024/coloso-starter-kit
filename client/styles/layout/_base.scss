@@ -1,0 +1,177 @@
+// reset style
+html {
+  font-size: 62.5%;
+  scroll-behavior: auto;
+  -webkit-font-smoothing: antialiased;
+}
+
+html,
+body {
+  min-height: 100%;
+}
+
+body {
+  min-width: 37.5rem;
+  margin: 0;
+  font-size: 1em;
+}
+
+body,
+input,
+textarea,
+select,
+button {
+  font-family: 'Spoqa Han Sans Neo', 'Apple SD Gothic Neo', 'Segoe UI', sans-serif, 'Apple Color Emoji',
+    'Segoe UI Emoji';
+  line-height: 1.5;
+
+  :lang(zh-TW) {
+    font-family: 'Noto Sans TC', 'Spoqa Han Sans Neo', 'Apple SD Gothic Neo', 'Microsoft JhengHei UI',
+      'Microsoft YaHei UI', 'Segoe UI', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
+  }
+}
+
+[data-newline='true'] {
+  white-space: pre-line;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+}
+
+p {
+  margin: 0;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+a:not([href]) {
+  pointer-events: none;
+}
+
+img {
+  vertical-align: top;
+  max-width: 100%;
+  height: auto;
+}
+
+video {
+  display: inline-block;
+  vertical-align: top;
+  max-width: 100%;
+}
+
+pre {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+menu,
+ul,
+ol,
+dl,
+dt,
+dd {
+  margin: 0;
+  padding: 0;
+}
+
+ul,
+ol,
+li {
+  list-style: none;
+}
+
+em,
+address {
+  font-style: normal;
+}
+
+figure,
+form {
+  margin: 0;
+}
+
+fieldset {
+  vertical-align: top;
+  margin: 0;
+  padding: 0;
+  border: 0 none;
+}
+
+label {
+  cursor: pointer;
+}
+
+button,
+input,
+select,
+textarea {
+  vertical-align: baseline;
+  margin: 0;
+  border-radius: 0;
+  font-size: 100%;
+  line-height: inherit;
+}
+
+button {
+  box-sizing: border-box;
+  padding: 0;
+  border: 0 none;
+  background: transparent;
+  cursor: pointer;
+}
+
+input[type='number'] {
+  &::-webkit-inner-spin-button {
+    display: none;
+  }
+}
+
+input[type='checkbox'],
+input[type='radio'] {
+  vertical-align: middle;
+}
+
+input[type='text'] {
+  background: none;
+  outline: inherit;
+}
+
+textarea {
+  vertical-align: top;
+  resize: vertical;
+}
+
+input:invalid,
+textarea:invalid {
+  background-color: transparent;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  empty-cells: show;
+}
+
+td {
+  vertical-align: middle;
+}
+
+select {
+  vertical-align: middle;
+  border-radius: 0;
+}
+
+hr {
+  border-width: 0.1rem 0 0;
+  border-style: solid;
+}

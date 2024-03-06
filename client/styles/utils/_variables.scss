@@ -1,0 +1,119 @@
+@use 'sass:math';
+
+/*
+* global variables
+*/
+
+// grid
+$g-tiny: 37.5rem;
+$g-small: 48rem;
+$g-medium: 72rem;
+$g-large: 98rem;
+$g-huge: 112rem;
+$g-full: 144rem;
+$g-wide: 192rem;
+
+$tiny: 414px;
+$small: 560px;
+$medium: 720px;
+$large: 960px;
+$huge: 1240px;
+$full: 1440px;
+$wide: 1600px;
+
+// size
+$s-gutter-contents-small: 4.8rem;
+$s-gutter-contents-medium: 6rem;
+$s-gutter-contents-large: 7.2rem;
+$s-gutter-contents-huge: 10rem;
+
+$s-gutter-small: 1rem;
+$s-gutter-small-double: $s-gutter-small * 2;
+$s-gutter-small-half: math.div($s-gutter-small, 2);
+
+$s-gutter: 1.6rem;
+$s-gutter-half: math.div($s-gutter, 2);
+$s-gutter-quarter: math.div($s-gutter, 4);
+
+$s-gutter-large: 2.4rem;
+$s-gutter-large-half: math.div($s-gutter-large, 2);
+
+$s-header-mobile: 5.4rem;
+$s-header-tablet: 9.6rem;
+$s-header-laptop: 10.4rem;
+
+$s-header: 10.1rem;
+$s-header-large: $s-header;
+$s-header-huge: $s-header-laptop;
+
+// z-index
+$z-space: 1001;
+$z-cloud: 101;
+$z-floor: 11;
+$z-default: 1;
+
+// typeface
+$f-headline: 4.8rem;
+$f-notice: 3.2rem;
+$f-title: 2.4rem;
+$f-subtitle: 2rem;
+$f-topic: 1.8rem;
+$f-abstract: 1.6rem;
+$f-contents: 1.4rem;
+$f-footnote: 1.2rem;
+
+// color
+$c-primary: #ed2040;
+$c-secondary: #f9858d;
+$c-brand: #ffb200;
+$c-early: #4200ff;
+
+$c-dark: #121212;
+$c-darkgray: #252525;
+
+$c-error: #cf6679;
+$c-info: #cf6679;
+
+$c-background: #121212;
+$c-foreground: #f2f2f2;
+
+$c-label: #898989;
+$c-strong: #a0a0a0;
+$c-emphasis: #c5c5c5;
+$c-hint: #e0e0e0;
+$c-search: #f2f2f2;
+$c-veiled: #f9f9f9;
+$c-tag: #4d4d4d;
+$c-dropdown: #888;
+
+$c-white: #fff;
+$c-black: #000;
+
+$c-brand: #ffb200;
+
+$c-strong-revert: rgba($c-white, 0.87);
+$c-emphasis-revert: rgba($c-white, 0.6);
+
+$c-readonly: #e7e7e7;
+$c-disabled: #6c6c6c;
+$c-disabled-revert: rgba($c-white, 0.38);
+
+// transition & animation
+$ease-dur: 0.2s;
+$ease-out: ease-out;
+$ease-balance: ease-in-out;
+$ease-cb: cubic-bezier(0.645, 0.045, 0.355, 1);
+$slide-cb: cubic-bezier(0.25, 0.1, 0.2, 1);
+
+$ease-basic: $ease-cb;
+
+$theme-size: (
+  small: $s-gutter-contents-small,
+  medium: $s-gutter-contents-large,
+  large: $s-gutter-contents-huge,
+);
+$theme-color: (
+  black: $c-dark,
+  white: $c-white,
+  pale: $c-search,
+);

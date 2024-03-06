@@ -1,0 +1,139 @@
+.redeem-voucher {
+  display: flex;
+  margin-bottom: $s-gutter;
+
+  .btn {
+    min-width: 8.2rem;
+    margin-left: $s-gutter-half;
+  }
+}
+
+.voucher-dropdown {
+  position: relative;
+  z-index: $z-default;
+  flex: 1;
+  margin-bottom: $s-gutter-large-half;
+  height: 4.4rem;
+  font-size: $f-contents;
+
+  &__selected {
+    position: relative;
+    z-index: $z-default;
+    height: 4.4rem;
+    width: 100%;
+    padding: 1rem $s-gutter 1.1rem 1.1rem;
+    border: 0.1rem solid $c-hint;
+    border-top-left-radius: 0.5rem;
+    border-top-right-radius: 0.5rem;
+    color: $c-tag;
+    text-align: left;
+
+    i {
+      font-style: normal;
+      color: $c-primary;
+    }
+
+    .icon path {
+      @include transition(all, 0.3s);
+      stroke: $c-disabled;
+      transform: rotate(-180deg);
+      transform-origin: center;
+    }
+  }
+
+  &--hidden {
+    overflow: hidden;
+
+    .voucher-dropdown__list {
+      visibility: hidden;
+    }
+  }
+
+  &--hidden &__selected {
+    border-radius: 0.5rem;
+
+    .icon path {
+      transform: rotate(0);
+    }
+  }
+
+  &__field {
+    width: 100%;
+    border: none;
+
+    outline: none;
+
+    cursor: pointer;
+
+    i {
+      color: $c-primary;
+    }
+
+    & ~ .icon path {
+      stroke: $c-disabled;
+
+      transition: transform 0.3s;
+      transform: rotate(180deg);
+      transform-origin: center;
+    }
+  }
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+    visibility: visible;
+    overflow-y: auto;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: $z-default;
+    width: 100%;
+    max-height: 30rem;
+    box-sizing: border-box;
+    border: 0.1rem solid #e0e0e0;
+    border-top: none;
+    border-bottom-right-radius: 0.5rem;
+    border-bottom-left-radius: 0.5rem;
+    background-color: $c-white;
+
+    &-item + &-item {
+      border-top: 0.1rem solid #e0e0e0;
+    }
+  }
+
+  &__label {
+    @include transition(all, 0.2s);
+    display: block;
+    padding: 1.1rem $s-gutter 1.3rem 1.1rem;
+
+    &:hover {
+      background-color: $c-veiled;
+    }
+
+    mark {
+      margin-right: 0.5rem;
+      background-color: transparent;
+    }
+
+    small {
+      font-size: $f-footnote;
+    }
+  }
+
+  &__desc {
+    display: flex;
+    justify-content: space-between;
+
+    margin-top: $s-gutter-quarter;
+
+    &:last-child {
+      color: $c-strong;
+    }
+  }
+
+  &__trigger:checked ~ label {
+    span {
+      color: $c-primary;
+    }
+  }
+}

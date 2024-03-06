@@ -1,0 +1,65 @@
+@use 'sass:math';
+
+.radio {
+  display: inline-block;
+  vertical-align: top;
+
+  &-label {
+    display: flex;
+    flex: 1;
+    flex-direction: row;
+    overflow: hidden;
+
+    .icon--radio {
+      position: relative;
+      display: inline-flex;
+
+      width: 1.8rem;
+      height: 1.8rem;
+      margin-top: -$s-gutter-half;
+      margin-left: -$s-gutter-half;
+      padding: $s-gutter-half;
+
+      &::before {
+        @include transition();
+        content: '';
+        position: relative;
+        display: flex;
+        flex: 1;
+        align-items: center;
+        justify-content: center;
+
+        border: 0.1rem solid $c-strong;
+        border-radius: 50%;
+      }
+
+      &::after {
+        @include transition();
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+
+        width: 0.8rem;
+        height: 0.8rem;
+        border-radius: 50%;
+
+        background-color: $c-emphasis;
+
+        transform: translate(-50%, -50%) scale(1);
+      }
+
+      .radio-trigger:checked ~ & {
+        &::before {
+          border-color: $c-primary;
+
+          background-color: $c-primary;
+        }
+
+        &::after {
+          background-color: $c-white;
+        }
+      }
+    }
+  }
+}

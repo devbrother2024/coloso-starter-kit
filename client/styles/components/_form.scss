@@ -1,0 +1,115 @@
+@use 'sass:math';
+
+input:invalid,
+textarea:invalid {
+  background-color: #4d4d4d;
+}
+
+input.input {
+  flex: 1;
+  box-sizing: border-box;
+  width: 100%;
+  height: 4.4rem;
+  padding: 1.1rem $s-gutter 1.3rem 1.1rem;
+  border: 0.1rem solid #e0e0e0;
+  border-radius: 0.5rem;
+  background-color: $c-white;
+  outline: none;
+  font-size: $f-contents;
+  color: #4d4d4d;
+
+  &::placeholder {
+    color: #898989;
+  }
+
+  &:invalid {
+    background-color: $c-white;
+  }
+
+  &--half {
+    width: 50%;
+  }
+
+  &--wide {
+    flex: 1;
+    width: 100%;
+  }
+}
+
+.input {
+  &:-webkit-autofill {
+    -webkit-text-fill-color: #4d4d4d;
+    -webkit-box-shadow: 0 0 0 100rem transparent inset;
+    -webkit-transition: background-color 9999s ease-out;
+    transition: background-color 5000s ease-in-out 0s;
+  }
+
+  &:invalid {
+    background-color: transparent;
+  }
+
+  &--readonly {
+    outline: none;
+    color: $c-disabled;
+  }
+
+  &__trigger & {
+    width: 100%;
+  }
+
+  &__trigger {
+    position: relative;
+    display: flex;
+    flex: 1;
+
+    .label__trigger {
+      @include transition();
+      position: absolute;
+      top: 50%;
+      left: 1.1rem;
+      font-size: $f-contents;
+      color: $c-label;
+      cursor: text;
+      transform: translateY(-50%);
+    }
+
+    &.label,
+    .auth-block &:focus-within {
+      .label__trigger {
+        top: 1.1rem;
+        font-size: 1.1rem;
+        color: $c-strong;
+      }
+
+      .input {
+        padding: 1.8rem $s-gutter 0.6rem 1.1rem;
+      }
+    }
+
+    .icon {
+      position: absolute;
+      top: 50%;
+      right: 1.1rem;
+      transform: translateY(-50%);
+
+      &--verified {
+        display: none;
+      }
+    }
+
+    &.is-verified {
+      .input {
+        border-color: transparent;
+        outline: none;
+      }
+
+      .icon--verified {
+        display: block;
+      }
+    }
+
+    & + .btn {
+      margin-left: $s-gutter-half;
+    }
+  }
+}

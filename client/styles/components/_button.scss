@@ -1,0 +1,138 @@
+@use 'sass:math';
+
+.btn {
+  $btn-dur: $ease-dur * 3;
+  $btn-ease: cubic-bezier(0.215, 0.61, 0.355, 1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  min-width: 18rem;
+  height: 4.8rem;
+  padding: $s-gutter $s-gutter-large-half;
+  border: 0.1rem solid $c-primary;
+  border-radius: 0.5rem;
+  background-color: $c-primary;
+  font-weight: bold;
+  font-size: $f-abstract;
+  color: $c-white;
+  text-align: center;
+  transition: filter $ease-dur;
+
+  > span {
+    position: relative;
+  }
+
+  &:disabled {
+    border-color: $c-disabled;
+    background-color: $c-disabled;
+    color: $c-white;
+    cursor: default;
+
+    &:hover,
+    &:focus {
+      filter: brightness(1);
+    }
+  }
+
+  &:hover,
+  &:focus {
+    filter: brightness(0.85);
+  }
+
+  &--primary {
+    background-color: $c-primary;
+    color: $c-white;
+  }
+
+  &--secondary {
+    background-color: transparent;
+    color: $c-primary;
+
+    &:disabled {
+      border-color: $c-disabled;
+      background-color: transparent;
+      color: $c-disabled;
+    }
+  }
+
+  &--ghost {
+    border-color: $c-background;
+    background-color: transparent;
+    color: $c-background;
+
+    &:disabled {
+      border-color: $c-disabled;
+      background-color: transparent;
+      color: $c-disabled;
+    }
+  }
+
+  &--early {
+    border-color: $c-early;
+    background-color: $c-early;
+    color: $c-white;
+
+    &:disabled {
+      border-color: $c-disabled;
+      background-color: $c-disabled;
+    }
+  }
+
+  &--invert {
+    border-color: $c-disabled;
+    background-color: $c-disabled;
+  }
+
+  &--snow {
+    border-color: $c-search;
+    background-color: $c-search;
+    color: $c-darkgray;
+  }
+
+  &--x-small {
+    min-width: auto;
+    height: 3.4rem;
+    padding: $s-gutter-half $s-gutter;
+    font-size: $f-footnote;
+  }
+
+  &--small {
+    min-width: 6rem;
+    height: 4rem;
+    padding: $s-gutter-half $s-gutter;
+    font-size: $f-contents;
+  }
+
+  &--medium {
+    min-width: 12rem;
+    height: 4.4rem;
+    padding: $s-gutter $s-gutter;
+    font-size: $f-contents;
+  }
+
+  &--large {
+    min-width: auto;
+    height: 4.4rem;
+    padding: $s-gutter-large-half $s-gutter;
+  }
+
+  &--wide {
+    width: 100%;
+  }
+
+  &-group {
+    display: flex;
+    flex-direction: row;
+    margin-top: $s-gutter * 2;
+    margin-right: -$s-gutter-half;
+    margin-left: -$s-gutter-half;
+  }
+
+  .btn-group & {
+    flex: 1;
+    min-width: auto;
+    margin-right: $s-gutter-half;
+    margin-left: $s-gutter-half;
+  }
+}

@@ -1,0 +1,35 @@
+name: Test Starter Kit Client
+on:
+  pull_request:
+    branches: [ main, production ]
+    paths:
+      - client/**/*
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+
+    strategy:
+      matrix:
+        node-version: [ 20.x ]
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Cache node modules
+        id: node-cache
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: |
+            node_modules
+            ~/.cache
+          key: ${{ runner.os }}-node-modules-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-modules-
+      - name: Prepare dot npmrc for private registry
+        run: echo //npm.pkg.github.com/:_authToken=${{ secrets.GH_TOKEN }} >> ~/.npmrc
+      - name: Build client
+        run: |
+          npm ci --include=dev
+          npm run build -w client

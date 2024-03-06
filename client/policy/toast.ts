@@ -1,0 +1,1 @@
+export const VISIBLE_TOAST_TIMEOUT = 2500;

@@ -1,0 +1,313 @@
+@use 'sass:math';
+
+.header {
+  /*
+    variables에 있는 header와 실제 header height가 달라 임시 지정합니다.
+  */
+  $s-header: 9.9rem;
+  $s-header-large: 10.5rem;
+  $s-header-huge: 6.9rem;
+
+  //@include transition();
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: $z-space - 1;
+  box-sizing: border-box;
+  background-color: $c-black;
+  font-size: $f-contents;
+  transition: all $ease-dur linear;
+
+  &--search-selective {
+    .header-brand,
+    .header-menu {
+      display: none;
+    }
+  }
+
+  &--search-result {
+    .nav {
+      display: none;
+    }
+  }
+
+  @include mq($large) {
+    &--search-selective {
+      .header-brand {
+        display: inline-flex;
+      }
+    }
+  }
+}
+
+.header-layout {
+  @include container($g-huge);
+}
+
+.header-top {
+  display: flex;
+  align-items: center;
+  padding-top: $s-gutter-half;
+  padding-bottom: $s-gutter-half;
+
+  @include mq($large) {
+    padding-top: $s-gutter-large-half;
+    padding-bottom: $s-gutter-large-half;
+    //height: 4.6rem;
+  }
+}
+
+.header-brand {
+  display: inline-flex;
+  align-items: center;
+  margin-right: 3.2rem;
+
+  &__link {
+    display: block;
+    padding-top: $s-gutter-half;
+    padding-bottom: $s-gutter-half;
+    line-height: 0;
+    text-align: center;
+  }
+
+  &__logo {
+    display: inline-block;
+    vertical-align: top;
+  }
+
+  @include mq($until: $large) {
+    .header--search-selective & {
+      display: none;
+    }
+  }
+}
+
+.header-menu {
+  color: $c-hint;
+}
+
+.header-account {
+  display: none;
+  box-sizing: border-box;
+  margin-right: -$s-gutter;
+  margin-left: 1.5rem;
+
+  .header--search-active & {
+    visibility: hidden;
+  }
+
+  &__util {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    z-index: $z-cloud;
+    display: none;
+    flex-direction: column;
+    padding-top: $s-gutter-quarter;
+    padding-bottom: $s-gutter-quarter;
+    background-color: $c-background;
+    transform: translate(-50%);
+    transform-origin: center top;
+    animation: dropdown-menu $ease-dur ease-in-out forwards;
+
+    li {
+      padding: 0.6rem 1.8rem;
+      font-size: $f-footnote;
+      white-space: nowrap;
+      cursor: pointer;
+
+      a {
+        display: block;
+      }
+    }
+  }
+
+  &--authorized {
+    .header--search-active & {
+      > .nav-a {
+        display: none;
+      }
+    }
+  }
+
+  .icon--user,
+  .icon--enter,
+  .icon--drop {
+    display: none;
+  }
+
+  .nav-me::after {
+    content: '님';
+    font-weight: normal;
+  }
+
+  @include mq($until: $large) {
+    margin-right: 0;
+    padding-left: $s-gutter;
+
+    .is--active-nav & {
+      position: fixed;
+      top: 0;
+      right: 0;
+      z-index: $z-space;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      max-width: $g-tiny;
+      height: $s-header-mobile;
+      background-color: $c-veiled;
+      transform-origin: right;
+      animation: narrow-backdrop $ease-dur ease-in-out forwards;
+
+      .nav-me {
+        padding-left: $s-gutter-small-half;
+      }
+
+      .nav-enter {
+        padding-right: 0.7rem;
+        padding-left: 0;
+        font-weight: bold;
+        color: $c-black;
+
+        &::after {
+          content: '하세요';
+          font-weight: normal;
+        }
+      }
+
+      .icon--enter {
+        display: inline-flex;
+        margin-top: -0.1rem;
+      }
+
+      .icon--user {
+        display: inline-flex;
+        margin-top: -0.1rem;
+        margin-right: $s-gutter-small-half;
+      }
+
+      &--authorized {
+        box-sizing: border-box;
+        padding-right: $s-gutter-small-double;
+        padding-left: $s-gutter-small-double;
+        background-color: $c-black;
+
+        > .nav-a {
+          display: none;
+        }
+
+        .nav-a {
+          color: $c-white;
+        }
+
+        .icon--enter path {
+          stroke: $c-white;
+        }
+
+        & + .header-menu {
+          .icon--close path {
+            stroke: $c-white;
+          }
+        }
+      }
+    }
+  }
+
+  @include mq($until: $medium) {
+    .is--active-nav & {
+      max-width: none;
+    }
+  }
+
+  @include mq($large) {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    max-width: none;
+
+    .icon--drop {
+      display: inline-flex;
+      margin: -1.5rem -0.7rem -1.5rem 0;
+    }
+
+    &__classroom {
+      display: block;
+    }
+
+    &__util li:hover {
+      a,
+      button {
+        font-weight: bold;
+        color: $c-white;
+      }
+    }
+
+    &__menu {
+      position: relative;
+      padding-top: $s-gutter-small-half;
+      padding-bottom: $s-gutter-small-half;
+
+      &:hover {
+        .icon--drop {
+          transform: rotate(-180deg);
+
+          path {
+            stroke: $c-white;
+          }
+        }
+
+        .header-account__util {
+          display: flex;
+        }
+      }
+
+      .icon--drop {
+        @include transition();
+      }
+    }
+  }
+}
+
+.header-menu {
+  position: absolute;
+  top: $s-gutter-half;
+  right: $s-gutter-half;
+  z-index: $z-space;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 4rem;
+  height: 3.8rem;
+  padding: $s-gutter-half;
+
+  .icon--close {
+    display: none;
+    transform-origin: center center;
+    animation: swipe-menu $ease-out $ease-dur forwards;
+
+    path {
+      stroke: $c-black;
+    }
+  }
+  .header--search-selective & {
+    display: none;
+  }
+
+  @include mq($until: $large) {
+    .is--active-nav & {
+      .icon--open {
+        display: none;
+      }
+
+      .icon--close {
+        display: block;
+      }
+    }
+  }
+
+  @include mq($large) {
+    display: none;
+  }
+}

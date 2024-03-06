@@ -1,0 +1,227 @@
+@use 'sass:math';
+
+/*
+* category
+*/
+
+.display-category {
+  & {
+    position: sticky;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: $z-cloud;
+    margin-bottom: $s-gutter;
+    padding: $s-gutter 0;
+    background-color: $c_white;
+    will-change: auto;
+  }
+
+  &.sticky-header {
+    top: $s-header-tablet;
+    transition: all 0.2s linear;
+  }
+
+  &__title {
+    padding-top: $s-gutter-large;
+    font-weight: 700;
+    font-size: $s-gutter-small-double;
+    color: $c-dark;
+  }
+
+  @include mq($large) {
+    & {
+      margin-bottom: 2.8rem;
+      padding: $s-gutter-small-double 0;
+    }
+
+    &.sticky-header {
+      top: $s-header-laptop;
+    }
+
+    &__title {
+      padding-top: $s-gutter-contents-medium;
+      font-size: 3rem;
+      line-height: 1.3;
+    }
+  }
+
+  @include mq($wide) {
+    &.sticky-header {
+      top: $s-header-laptop;
+    }
+  }
+}
+
+.display {
+  &__tag-list {
+    display: flex;
+    gap: $s-gutter-small;
+    flex-wrap: wrap;
+  }
+
+  &__tag-item,
+  &__tag-item-selected {
+    display: inline-block;
+    border-radius: $s-gutter-small-half;
+    font-size: $f-contents;
+    line-height: $s-gutter-small-double;
+  }
+
+  &__tag-item {
+    background-color: #f2f2f2;
+    color: $c-tag;
+    transition: 0.3s;
+    &:hover {
+      background-color: $c-hint;
+      transition: 0.3s;
+    }
+  }
+
+  &__tag-item-selected {
+    background-color: $c-tag;
+    color: $c-white;
+    text-align: center;
+  }
+
+  &__tag-anchor {
+    display: block;
+    padding: 0.7rem $s-gutter-large-half;
+  }
+
+  @include mq($until: $large) {
+    &__title {
+      font-size: $s-gutter-small-double;
+      line-height: 3rem;
+    }
+
+    &__tag-item,
+    &__tag-item-selected {
+      font-size: $f-footnote;
+      white-space: nowrap;
+
+      &:first-child {
+        margin-left: $s-gutter-small-double;
+      }
+
+      &:last-child {
+        margin-right: $s-gutter-small-double;
+      }
+    }
+
+    &__tag-list {
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      margin-right: -$s-gutter-small-double;
+      margin-left: -$s-gutter-small-double;
+      white-space: nowrap;
+
+      &::before,
+      &::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        width: $s-gutter-small-double;
+        height: 3.4rem;
+        transform: translateY(-50%);
+      }
+
+      &::before {
+        left: 0;
+        background: linear-gradient(90deg, $c-white 0%, rgba($c-white, 0) 100%);
+      }
+
+      &::after {
+        right: 0;
+        background: linear-gradient(-90deg, $c-white 0%, rgba($c-white, 0) 100%);
+      }
+
+      &::-webkit-scrollbar {
+        display: none;
+      }
+    }
+  }
+}
+
+.display-cards {
+  margin-top: $s-gutter-contents-medium;
+
+  .result & {
+    margin-top: $s-gutter-small-double;
+  }
+
+  &__title {
+    padding-bottom: $s-gutter-small-double;
+    font-weight: 700;
+    font-size: $f-subtitle;
+    color: $c-dark;
+    line-height: 3.6rem;
+  }
+
+  @include mq($until: $large) {
+    margin-top: $s-gutter-large;
+
+    .result & {
+      margin-top: $s-gutter;
+    }
+
+    &__title {
+      padding-bottom: 1.65rem;
+      font-size: $f-abstract;
+      line-height: 2.3rem;
+    }
+  }
+}
+
+.display-card {
+  &__image {
+    overflow: hidden;
+
+    img {
+      @include transition();
+      object-fit: cover;
+      width: 100%;
+      height: 100%;
+      border-radius: 0.6rem;
+    }
+  }
+
+  &__link {
+    &:hover img {
+      transform: scale(1.025);
+    }
+  }
+
+  &__title {
+    @include ellipsis(2);
+    margin-top: $s-gutter;
+    margin-bottom: $s-gutter-small;
+    opacity: 0.88;
+    font-weight: 700;
+    font-size: $f-abstract;
+    color: $c-dark;
+    line-height: $s-gutter-large;
+    word-break: keep-all;
+  }
+
+  &__teacher {
+    @include ellipsis(1);
+    font-weight: 400;
+    font-size: $f-contents;
+    color: $c-strong;
+    line-height: 2.1rem;
+  }
+
+  @include mq($until: $large) {
+    &__title {
+      margin-top: $s-gutter-large-half;
+      margin-bottom: $s-gutter-quarter;
+      font-size: $f-footnote;
+      line-height: 1.8rem;
+    }
+    &__teacher {
+      font-size: $f-footnote;
+      line-height: 1.8rem;
+    }
+  }
+}

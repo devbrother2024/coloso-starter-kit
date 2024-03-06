@@ -1,0 +1,19 @@
+{
+  "extends": [
+    "@day1co/stylelint-config"
+  ],
+  "customSyntax": "postcss-scss",
+  "overrides": [
+    {
+      "files": [
+        "**/*.style.ts"
+      ],
+      "customSyntax": "postcss-styled-syntax"
+    }
+  ],
+  "rules": {
+    "block-no-empty": null,
+    "no-empty-source": null,
+    "value-keyword-case": null
+  }
+}
