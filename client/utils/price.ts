@@ -1,5 +1,3 @@
-import { moneyUnitConverter } from '@day1co/pebbles';
-
 import { LocaleOptions } from '@/policy/local';
 
 const { CURRENCY, LOCALE_FORMAT } = LocaleOptions;
@@ -18,18 +16,24 @@ export const priceLocale = (price = 0, isPositive = true) => {
   return isNeedPositive ? localePrice : `-${localePrice}`;
 };
 
+const convertMoneyUnit = (value: number) => {
+  value = Math.floor(value);
+
+  if (!Number.isInteger(value)) {
+    throw new Error('Value must be an integer when inputUnit is fractionalUnit');
+  }
+
+  const fractionRatio = 100;
+  const fractionalUnit = value % fractionRatio;
+  const currency = (value - fractionalUnit) / fractionRatio;
+  const result = currency + '.' + fractionalUnit.toString().padStart(2, '0');
+  return Number(Number(result).toFixed(2));
+};
+
 export const toCurrencyView = (price = 0) => {
   let resultPrice = price ?? 0;
 
-  resultPrice = Number(
-    Number(
-      moneyUnitConverter.convert({
-        value: resultPrice,
-        inputUnit: 'fractionalUnit',
-        outputUnit: 'currency',
-      }),
-    ).toFixed(2),
-  );
+  resultPrice = convertMoneyUnit(resultPrice);
 
   return resultPrice;
 };

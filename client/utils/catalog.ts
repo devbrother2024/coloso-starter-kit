@@ -1,5 +1,3 @@
-import { DateUtil } from '@day1co/pebbles';
-
 import { NotificationLabels } from '@/policy/notificationLabels';
 import { ProductType } from '@/policy/product';
 import { TypeBundle } from '@/types/bundle';

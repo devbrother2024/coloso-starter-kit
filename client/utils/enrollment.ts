@@ -1,5 +1,3 @@
-import { DateUtil } from '@day1co/pebbles';
-
 import { TypeEnrollment } from '@/types/enrollment';
 import { formatUnitToSlash, getDatetimeString } from '@/utils/date';
 

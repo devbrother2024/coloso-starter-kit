@@ -2,7 +2,6 @@
 
 import { useMemo } from 'react';
 
-import { StringUtil } from '@day1co/pebbles';
 import Image from 'next/image';
 import { useSnapshot } from 'valtio';
 
@@ -16,6 +15,16 @@ interface TypeCard {
   catalog: TypeCatalog;
   isLightTheme: boolean;
 }
+
+const splitString = (str: string, separator = ',') => {
+  return str.split(separator).reduce((textList: string[], text) => {
+    text = text.trim();
+    if (text.length > 0) {
+      textList.push(text);
+    }
+    return textList;
+  }, []);
+};
 
 const ValidLangTokenLength = 1;
 
@@ -32,7 +41,7 @@ const CardBanner = ({ catalog, isLightTheme }: TypeCard) => {
 
   const lecture = publicDescription || '';
   const assetUrl = defaultCardAsset?.url || '';
-  const keywords: string[] = StringUtil.split(extras?.displayKeywords || '');
+  const keywords: string[] = splitString(extras?.displayKeywords || '');
   const displayTitle = (product.displays?.length && product.displays[0].title) || '';
 
   const catalogOpenAt = useMemo(() => {

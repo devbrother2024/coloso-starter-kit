@@ -5,7 +5,7 @@ import { ExtendedProduct } from '@/types/product';
 import { TypeProduct, TypeProductBundle } from '@/types/product';
 import { VouchersInfo } from '@/types/voucher';
 
-import type { Nullable } from '@day1co/pebbles';
+export type Nullable<T> = T | null;
 
 export interface TypeOrder {
   pg: string;
