@@ -28,7 +28,6 @@
     "normalize.css": "^8.0.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "react-gtm-module": "^2.0.11",
     "react-loading-skeleton": "^3.2.0",
     "stylelint": "^15.2.0",
     "swiper": "^9.1.0",
@@ -37,10 +36,12 @@
   },
   "devDependencies": {
     "@svgr/webpack": "^6.5.1",
-    "@types/react-gtm-module": "^2.0.1",
-    "eslint-config-next": "^13.1.6",
+    "eslint-config-next": "^15.3.0",
+    "eslint-config-prettier": "^10.1.5",
+    "eslint-plugin-prettier": "^5.5.0",
     "postcss-scss": "^4.0.6",
     "postcss-styled-syntax": "^0.4.0",
+    "prettier": "3.5.3",
     "rimraf": "^4.1.2",
     "sass": "^1.57.1"
   }
