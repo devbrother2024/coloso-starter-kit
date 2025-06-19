@@ -7,6 +7,8 @@ import { VouchersInfo } from '@/types/voucher';
 
 export type Nullable<T> = T | null;
 
+export type TypeOrderItem = ExtendedProduct;
+
 export interface TypeOrder {
   pg: string;
   method: string | null;
@@ -23,6 +25,10 @@ export interface TypeOrder {
   deliveryAddressExtra: string;
   deliveryMessage: string;
   vouchersInfo: VouchersInfo[];
+}
+
+export interface ExtendedOrderItems {
+  orderItems: TypeOrderItem[];
 }
 
 export interface TypeOrderDetail extends ExtendedOrderItems {
