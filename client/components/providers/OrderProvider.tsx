@@ -22,7 +22,7 @@ const OrderProvider = ({ order }: TypeOrderProvider) => {
     const electiveCourses = optionProducts.map(({ courses: [course] = [] }) => course);
     const isBundle = product.type === ProductType.BUNDLE;
     const isElective = product.type === ProductType.ELECTIVE;
-    const courses = isElective ? electiveCourses : product.courses ?? [];
+    const courses = isElective ? electiveCourses : (product.courses ?? []);
     const [optionProduct] = optionProducts;
     const hasOptionProduct = optionProducts.some(({ type }) =>
       [ProductType.COACHING, ProductType.GOODS].includes(type),
