@@ -50,7 +50,7 @@ const CardBanner = ({ catalog, isLightTheme }: TypeCard) => {
     const readyCatalog = courseOpenAt > new Date();
     const openAtToken = readyCatalog ? t('CourseOpen', { openAt: `${dateLabel}` }) : t('AvailableAt');
     return openAtToken.length > ValidLangTokenLength ? openAtToken : '';
-  }, [openAt, lang, t]);
+  }, [openAt, t]);
 
   return (
     <figure className="card responsive-card">

@@ -17,7 +17,7 @@ const OrderContainer = ({ children }: PropsWithChildren) => {
     if (!isCancel) return;
 
     onOpenDialog();
-  }, [isCancel]);
+  }, [isCancel, onOpenDialog]);
 
   useEffect(() => {
     return () => {

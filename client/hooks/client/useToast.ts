@@ -9,7 +9,7 @@ const useToast = () => {
 
   const cleanupNotifications = useCallback(() => {
     delete notificationStore.notifications[timeId];
-  }, []);
+  }, [timeId]);
 
   const executeNotifications = useCallback(
     (payload: TypeNotification) => {
@@ -19,7 +19,7 @@ const useToast = () => {
         cleanupNotifications();
       }, VISIBLE_TOAST_TIMEOUT);
     },
-    [cleanupNotifications],
+    [cleanupNotifications, timeId],
   );
 
   return executeNotifications;

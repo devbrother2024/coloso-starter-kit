@@ -64,7 +64,7 @@ const NameInput = () => {
   useEffect(() => {
     if (!user.name) return;
     dispatchForm({ userName: user.name });
-  }, [user.name]);
+  }, [user.name, dispatchForm]);
 
   return (
     <fieldset>

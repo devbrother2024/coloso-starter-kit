@@ -87,7 +87,7 @@ const OrderState = ({ orderId }: TypeOrderState) => {
   useEffect(() => {
     if (payment.impSuccess) return;
     setEnabledOrder(true);
-  }, []);
+  }, [payment.impSuccess]);
 
   // success
   useEffect(() => {
@@ -98,7 +98,15 @@ const OrderState = ({ orderId }: TypeOrderState) => {
     updatePaymentState({ type: 'success', state: true });
     mutateOrderSuccess({ orderId, impMerchantUid, impUid });
     refetchMyPageQueryKey();
-  }, []);
+  }, [
+    mutateOrderSuccess,
+    payment.impSuccess,
+    payment.impMerchantUid,
+    payment.impUid,
+    refetchMyPageQueryKey,
+    paymentStateRef,
+    payment,
+  ]);
 
   // cancel
   useEffect(() => {
@@ -111,7 +119,15 @@ const OrderState = ({ orderId }: TypeOrderState) => {
     const { orderId, impMerchantUid } = payment;
     updatePaymentState({ type: 'cancel', state: true });
     mutateOrderCancel({ orderId, impMerchantUid });
-  }, [isCancel]);
+  }, [
+    isCancel,
+    mutateOrderCancel,
+    payment.impMerchantUid,
+    payment.impSuccess,
+    payment.orderId,
+    paymentStateRef,
+    payment,
+  ]);
 
   return (
     <>

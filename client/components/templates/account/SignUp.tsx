@@ -124,7 +124,7 @@ const SignUp = () => {
     const invalidEmail = !!email && !isValidEmail(email);
 
     dispatchForm({ invalidName, invalidEmail });
-  }, [form.account]);
+  }, [form.account, dispatchForm]);
 
   return (
     <>

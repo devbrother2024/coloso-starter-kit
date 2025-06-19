@@ -49,7 +49,7 @@ const HeaderSelector = ({ activeSearchInput }: TypeHeaderSelector) => {
   useEffect(() => {
     const [, lang] = pathname.split('/') ?? 'en';
     setSiteLanguage(lang);
-  }, []);
+  }, [pathname, setSiteLanguage]);
 
   return (
     <>

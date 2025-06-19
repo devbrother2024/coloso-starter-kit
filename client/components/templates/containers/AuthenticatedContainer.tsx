@@ -10,7 +10,7 @@ const AuthenticatedContainer = ({ children }: PropsWithChildren) => {
 
   useEffect(() => {
     if (!isAuthorized) rejectAuthorize('/sign-in');
-  }, []);
+  }, [isAuthorized, rejectAuthorize]);
 
   if (!isAuthorized) <Loader />;
 

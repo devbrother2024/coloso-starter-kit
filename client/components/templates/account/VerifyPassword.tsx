@@ -22,7 +22,7 @@ const VerifyPassword = ({ signUpForm, dispatchSignUpForm }: TypeSignUpForm) => {
     const invalidPassword = !!password && !isValidPassword(password);
 
     dispatchForm({ invalidPassword });
-  }, [signUpForm.account]);
+  }, [signUpForm.account, dispatchForm]);
 
   return (
     <>

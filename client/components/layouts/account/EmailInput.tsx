@@ -110,7 +110,7 @@ const EmailInput = () => {
     if (count < CertificationTimer.RESEND) {
       dispatchForm({ canResendEmail: false });
     }
-  }, [count]);
+  }, [count, dispatchForm]);
 
   return (
     <>

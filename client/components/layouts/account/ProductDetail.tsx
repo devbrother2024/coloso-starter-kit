@@ -23,6 +23,7 @@ const ProductDetail = ({ product }: TypeProductDetail) => {
   const [detailItems, setDetailItems] = useState<TypeProduct[]>([]);
   const [isOpenDetail, setIsOpenDetail] = useState(false);
   const isSingleProduct = type === ProductType.COURSE && items.length === 0;
+
   const { type: productType } = items?.find(({ type }) => OptionProductTypes.includes(type)) ?? { type };
 
   const detailItemsMap: { [key: string]: TypeProduct[] } = {
@@ -39,7 +40,7 @@ const ProductDetail = ({ product }: TypeProductDetail) => {
   useEffect(() => {
     const detailItemsValue = detailItemsMap[productType];
     setDetailItems(detailItemsValue);
-  }, []);
+  }, [detailItemsMap, productType]);
 
   if (isSingleProduct) return null;
 

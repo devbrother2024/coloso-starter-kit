@@ -89,7 +89,7 @@ const Header = ({ className }: TypeHeader) => {
     if (activeNavigation) {
       headerStore.header.isSticky = true;
     }
-  }, [isSticky]);
+  }, [isSticky, activeNavigation]);
 
   useEffect(() => {
     const { classList } = document.body;

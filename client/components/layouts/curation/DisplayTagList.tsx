@@ -44,7 +44,7 @@ const DisplayTagList = ({ categoryId }: TypeDisplayTagList) => {
   const resetTagScroll = useCallback(() => {
     const tagIndex = targetItemRefs.current.findIndex((target) => target?.className.includes('selected'));
     scrollToCenter(tagIndex);
-  }, [scrollToCenter]);
+  }, [scrollToCenter, targetItemRefs]);
 
   const resetTargetOffsetTop = useCallback(() => {
     if (!targetNavRef.current?.previousElementSibling) return;
@@ -77,7 +77,7 @@ const DisplayTagList = ({ categoryId }: TypeDisplayTagList) => {
 
     resetTagScroll();
     resetTargetOffsetTop();
-  }, [primary, secondary]);
+  }, [primary, secondary, resetTagScroll, resetTargetOffsetTop]);
 
   if (!isFetched) return <DisplayTagListStub />;
 

@@ -85,7 +85,7 @@ const SignIn = () => {
       invalidPassword,
       isActiveSignInButton,
     });
-  }, [form.invalidEmail, form.invalidPassword, form.password, form.username]);
+  }, [form.invalidEmail, form.invalidPassword, form.password, form.username, dispatchForm]);
 
   return (
     <>

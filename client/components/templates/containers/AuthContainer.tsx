@@ -21,7 +21,8 @@ const AuthContainer = ({ children }: PropsWithChildren) => {
     if (isAuthorized) {
       router.replace(redirectUri);
     }
-  }, [isAuthorized, appURL]);
+  }, [isAuthorized, appURL, redirectUri, router]);
+
   return (
     <>
       <Header />

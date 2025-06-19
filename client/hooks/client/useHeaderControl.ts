@@ -38,7 +38,7 @@ const useHeaderControl = () => {
   useEffect(() => {
     if (!targetHeight) return;
     headerStore.header.targetOffset = targetHeight - headerHeight;
-  }, [targetHeight, headerHeight, headerStore]);
+  }, [targetHeight, headerHeight]);
 
   return { targetNavRef, setTargetOffsetTop };
 };

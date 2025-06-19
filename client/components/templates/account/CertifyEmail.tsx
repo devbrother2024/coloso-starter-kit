@@ -73,14 +73,14 @@ const CertifyEmail = ({ signUpForm, dispatchSignUpForm }: TypeSignUpForm) => {
     if (count < CertificationTimer.RESEND) {
       dispatchForm({ canResendEmail: false });
     }
-  }, [count]);
+  }, [count, dispatchForm]);
 
   useEffect(() => {
     const { email } = signUpForm.account;
     const invalidEmail = !!email && !isValidEmail(email);
 
     dispatchForm({ invalidEmail });
-  }, [signUpForm.account]);
+  }, [signUpForm.account, dispatchForm]);
 
   return (
     <>

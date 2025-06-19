@@ -27,7 +27,7 @@ const useLanguageSelector = () => {
   useEffect(() => {
     const [, siteLang] = pathname.split('/') ?? 'en';
     setSiteLanguage(siteLang);
-  }, []);
+  }, [pathname, setSiteLanguage]);
 
   return { onChangeLanguage };
 };
