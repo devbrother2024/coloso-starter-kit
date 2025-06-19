@@ -92,7 +92,9 @@ const DisplayTagList = ({ categoryId }: TypeDisplayTagList) => {
           <ul className={`${TAG}-list`} ref={targetContainerRef}>
             <li
               className={cx(categoryId === primaryCategory?.id ? `${TAG}-item-selected` : `${TAG}-item`)}
-              ref={(el: HTMLLIElement) => (targetItemRefs.current[0] = el)}
+              ref={(el: HTMLLIElement) => {
+                targetItemRefs.current[0] = el;
+              }}
             >
               <Link className={`${TAG}-anchor`} href={`/category/${primaryCategory?.id}`}>
                 <span>{t('All')}</span>
@@ -101,7 +103,9 @@ const DisplayTagList = ({ categoryId }: TypeDisplayTagList) => {
             {tagList?.map((tag, index) => (
               <li
                 className={cx(categoryId === tag.id ? `${TAG}-item-selected` : `${TAG}-item`)}
-                ref={(el: HTMLLIElement) => (targetItemRefs.current[index + 1] = el)}
+                ref={(el: HTMLLIElement) => {
+                  targetItemRefs.current[index + 1] = el;
+                }}
                 key={tag.id}
               >
                 <Link className={`${TAG}-anchor`} href={`/category/${tag.id}`}>
