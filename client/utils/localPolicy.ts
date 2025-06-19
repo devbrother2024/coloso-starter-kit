@@ -58,6 +58,7 @@ export enum TransactionMethod {
 
 export class DomainError extends Error {
   static INVALID_ACCESS_TOKEN = 'INVALID_ACCESS_TOKEN';
+  static PAGE_SLUG_NOT_FOUND = 'PAGE_SLUG_NOT_FOUND';
 
   constructor(message: string) {
     super(message);
@@ -66,9 +67,12 @@ export class DomainError extends Error {
 }
 
 export class PageDefaultException extends Error {
-  constructor(message: string) {
+  code: string;
+
+  constructor(message: string, code: string) {
     super(message);
     this.name = 'PageDefaultException';
+    this.code = code;
   }
 }
 
