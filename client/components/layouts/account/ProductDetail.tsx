@@ -26,21 +26,21 @@ const ProductDetail = ({ product }: TypeProductDetail) => {
 
   const { type: productType } = items?.find(({ type }) => OptionProductTypes.includes(type)) ?? { type };
 
-  const detailItemsMap: { [key: string]: TypeProduct[] } = {
-    [ProductType.BUNDLE]: products,
-    [ProductType.ELECTIVE]: items,
-    [ProductType.GOODS]: [product, ...items],
-    [ProductType.COACHING]: [product, ...items],
-  };
-
   const onClickDetail = () => {
     setIsOpenDetail((prev) => !prev);
   };
 
   useEffect(() => {
+    const detailItemsMap: { [key: string]: TypeProduct[] } = {
+      [ProductType.BUNDLE]: products,
+      [ProductType.ELECTIVE]: items,
+      [ProductType.GOODS]: [product, ...items],
+      [ProductType.COACHING]: [product, ...items],
+    };
+
     const detailItemsValue = detailItemsMap[productType];
     setDetailItems(detailItemsValue);
-  }, [detailItemsMap, productType]);
+  }, [productType, items, products, product]);
 
   if (isSingleProduct) return null;
 

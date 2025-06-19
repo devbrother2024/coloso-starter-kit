@@ -74,12 +74,6 @@ const OrderState = ({ orderId }: TypeOrderState) => {
     },
   });
 
-  const refetchMyPageQueryKey = () => {
-    queryClient.refetchQueries({ queryKey: [queryKey.USER_COURSES, { language: lang }] });
-    queryClient.refetchQueries({ queryKey: [queryKey.USER_VOUCHERS] });
-    queryClient.refetchQueries({ queryKey: [queryKey.ORDERS] });
-  };
-
   const updatePaymentState = ({ type, state }: TypeUpdatePaymentState) => {
     paymentStateRef.current[type] = state;
   };
@@ -97,15 +91,20 @@ const OrderState = ({ orderId }: TypeOrderState) => {
     const { orderId, impMerchantUid, impUid } = payment;
     updatePaymentState({ type: 'success', state: true });
     mutateOrderSuccess({ orderId, impMerchantUid, impUid });
-    refetchMyPageQueryKey();
+
+    // refetchMyPageQueryKey
+    queryClient.refetchQueries({ queryKey: [queryKey.USER_COURSES, { language: lang }] });
+    queryClient.refetchQueries({ queryKey: [queryKey.USER_VOUCHERS] });
+    queryClient.refetchQueries({ queryKey: [queryKey.ORDERS] });
   }, [
     mutateOrderSuccess,
     payment.impSuccess,
     payment.impMerchantUid,
     payment.impUid,
-    refetchMyPageQueryKey,
     paymentStateRef,
     payment,
+    queryClient,
+    lang,
   ]);
 
   // cancel
