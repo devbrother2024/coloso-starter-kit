@@ -23,3 +23,40 @@ export interface TypeClassroomUi {
   mobile: boolean;
   menu: boolean;
 }
+
+export interface TypeChapterClip {
+  assetId: number;
+  clipGroupId: number;
+  courseId: number;
+  createdAt: string;
+  deletedAt: string;
+  flags: number;
+  id: number;
+  playTime: number;
+  limitTime: number;
+  progressPlayTime: number;
+  poster: string;
+  sequence: number;
+  state: string;
+  title: string;
+  type: string;
+  updatedAt: string;
+  videoType: string;
+  uniqueCode?: string;
+  userClipProgress?: TypeUserChapterClipProgressList;
+  children: TypeChapterClip[];
+}
+
+export interface TypeUserChapterClipProgressList {
+  clipId: number;
+  completedAt: string | null;
+  createdAt: string;
+  id: number;
+  limitTime: number;
+  playTime: number;
+  position: number;
+  progress: number | null;
+  state: string;
+  updatedAt: string;
+  userId: number;
+}

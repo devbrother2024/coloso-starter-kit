@@ -22,7 +22,7 @@ const ProductCategory = () => {
   const { isFetching } = useQuery({ queryKey: [queryKey.I18N, lang] });
 
   const currentCategoryTree = display?.id ? categoryMap.get(display.id) : null;
-  const hasSecondaryCategory = !!currentCategoryTree?.parent?.id ?? null;
+  const hasSecondaryCategory = !!currentCategoryTree?.parent?.id;
 
   const category = [
     {

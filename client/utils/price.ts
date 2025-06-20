@@ -6,9 +6,7 @@ export const priceLocale = (price = 0, isPositive = true) => {
   if (isNaN(price)) return 0;
   const isNeedPositive = isPositive || !price;
   const intlOption = {
-    style: 'currency',
     currency: CURRENCY,
-    currencyDisplay: 'code',
     useGrouping: false,
   };
   const convertedPrice = new Intl.NumberFormat(LOCALE_FORMAT, intlOption);

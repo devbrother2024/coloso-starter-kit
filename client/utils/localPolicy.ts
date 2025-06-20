@@ -124,7 +124,7 @@ export class VoucherFilterValidation {
 
     return filters.every((filter) => {
       const { type, targetName, targetValue } = filter;
-      const conditionValue = this.condition?.[targetName as keyof VoucherCondition];
+      const conditionValue = this.condition?.[targetName as keyof VoucherCondition] as string | string[];
 
       if (!conditionValue) return false;
 
@@ -147,3 +147,16 @@ export const convertToVoucherCondition = (product: any): VoucherCondition => {
     courseIds: product.courses?.map((course: any) => course.id.toString()) ?? [],
   };
 };
+
+export enum IamportPg {
+  CHAI = 'chai',
+  INICIS = 'inicis',
+  KAKAO = 'kakao',
+  NAVER = 'naver',
+  PAYCO = 'payco',
+  EXIMBAY = 'eximbay',
+  PAYMENTWALL = 'PAYMENTWALL',
+  PAYPAL = 'paypal',
+  TOSS = 'toss',
+  TOSSPAY = 'tosspay',
+}

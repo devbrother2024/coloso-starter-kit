@@ -51,7 +51,11 @@ const PagePanelText = () => {
     const courseProductHideAt = isOptionProduct ? course?.hideAt : product?.hideAt;
 
     if (courseProductHideAt && maxDiscountVoucher.redeemEndAt) {
-      return [courseProductHideAt, maxDiscountVoucher.redeemEndAt].sort((a, b) => a.getTime() - b.getTime())[0];
+      return [courseProductHideAt, maxDiscountVoucher.redeemEndAt].sort((a, b) => {
+        const aTime = a instanceof Date ? a.getTime() : new Date(a).getTime();
+        const bTime = b instanceof Date ? b.getTime() : new Date(b).getTime();
+        return aTime - bTime;
+      })[0];
     }
 
     return courseProductHideAt || maxDiscountVoucher.redeemEndAt;

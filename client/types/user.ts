@@ -21,6 +21,22 @@ export interface User {
   phoneMarketingAgreement: boolean | null;
 }
 
+export interface TypeSignUpAccount {
+  name: string;
+  username: string;
+  password: string;
+  email: string;
+  emailCertified: boolean;
+}
+
+export interface TypeSignUp {
+  account: TypeSignUpAccount;
+  invalidName: boolean;
+  invalidEmail: boolean;
+  hasCertificateEmail: boolean;
+  isPasswordConfirmed: boolean;
+}
+
 export interface TypeSignUpForm {
   signUpForm: TypeSignUp;
   dispatchSignUpForm: (states: Partial<TypeSignUp>) => void;

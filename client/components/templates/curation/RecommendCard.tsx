@@ -25,7 +25,7 @@ const RecommendCard = ({ config }: TypeRecommendCard) => {
           <ul className="grid grid-column grid-column--triple">
             {catalogs.map((catalog) => (
               <li key={catalog.id} className="grid-column__item">
-                <CardBanner catalog={catalog} isLightTheme={isLightTheme} />
+                <CardBanner catalog={catalog} isLightTheme={isLightTheme ?? false} />
               </li>
             ))}
           </ul>

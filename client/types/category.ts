@@ -12,6 +12,7 @@ export interface TypeCategory {
   showAt: string;
   hideAt: string;
   children?: Array<TypeCategory>;
+  extras?: Record<string, unknown>;
 }
 
 export interface TypeCategoryMapItem extends TypeCategory {

@@ -3,11 +3,9 @@
 import { useMemo } from 'react';
 
 import Image from 'next/image';
-import { useSnapshot } from 'valtio';
 
 import Link from '@/components/elements/Link';
 import useTranslation from '@/hooks/client/useTranslation';
-import i18nStore from '@/store/i18n';
 import { TypeCatalog } from '@/types/operation';
 import { formatUnitToDotShortCut } from '@/utils/date';
 
@@ -30,7 +28,6 @@ const ValidLangTokenLength = 1;
 
 const CardBanner = ({ catalog, isLightTheme }: TypeCard) => {
   const t = useTranslation({ scope: 'PageCover' });
-  const { lang } = useSnapshot(i18nStore);
   const { page, products, publicTitle, publicDescription, defaultCardAsset, openAt, extras } = catalog;
   const [product] = products ?? [];
 

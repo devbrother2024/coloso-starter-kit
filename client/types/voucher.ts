@@ -15,6 +15,13 @@ export interface TypeVoucher {
   voucherTemplate: TypeVoucherTemplate;
 }
 
+export interface TypeVoucherTemplateFilter {
+  voucherTemplateId?: number;
+  type: string;
+  targetName: string;
+  targetValue: string;
+}
+
 export interface TypeVoucherTemplate {
   id: number;
   site: string;

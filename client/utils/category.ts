@@ -14,7 +14,17 @@ export const validateCategory = (id: number, categoryMap: Map<number, TypeCatego
 export const composeCategory = (categoryTree: TypeCategory[], parentNode?: TypeCategory): TypeCategoryMapArray[] => {
   return categoryTree?.reduce((acc: TypeCategoryMapArray[], cur) => {
     const { id, children } = cur;
-    const { level } = cur.extras.sequenceInfo;
+    let level = 'DEPTH_0';
+    if (
+      cur.extras &&
+      typeof cur.extras === 'object' &&
+      'sequenceInfo' in cur.extras &&
+      typeof cur.extras.sequenceInfo === 'object' &&
+      cur.extras.sequenceInfo !== null &&
+      'level' in cur.extras.sequenceInfo
+    ) {
+      level = cur.extras.sequenceInfo.level as string;
+    }
 
     const isParent = !Number(level.replace('DEPTH_', ''));
     const parent = isParent ? null : parentNode;

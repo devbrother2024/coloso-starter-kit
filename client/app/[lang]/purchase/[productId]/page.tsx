@@ -27,7 +27,7 @@ const PurchasePage = ({ params: { productId } }: TypePurchasePage) => {
         <Method />
         <Policy />
       </div>
-      <Submit productId={id} />
+      <Submit />
     </>
   );
 };

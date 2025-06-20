@@ -87,7 +87,7 @@ const CarouselCard = ({ config }: TypeCarouselCard) => {
           <Swiper className="carousel-card__swiper" {...settings}>
             {catalogs.map((catalog) => (
               <SwiperSlide key={catalog.id}>
-                <CardBanner key={catalog.id} catalog={catalog} isLightTheme={isLightTheme} />
+                <CardBanner key={catalog.id} catalog={catalog} isLightTheme={isLightTheme ?? false} />
               </SwiperSlide>
             ))}
           </Swiper>

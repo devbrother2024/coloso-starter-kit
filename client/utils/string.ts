@@ -6,7 +6,7 @@ export const queryString = (params: Record<string, unknown>) => {
   for (const key of Object.keys(resultParams)) {
     resultParams = {
       ...resultParams,
-      [key]: toString(resultParams[key]),
+      [key]: String(resultParams[key]),
     };
   }
 
