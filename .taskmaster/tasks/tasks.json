@@ -5,7 +5,7 @@
         "id": 1,
         "title": "Express 백엔드 프로젝트 초기 설정",
         "description": "Node.js 18+ 기반 Express.js 5.1.0 백엔드 프로젝트 초기 구조 설정 및 Prisma ORM 통합",
-        "status": "pending",
+        "status": "done",
         "dependencies": [],
         "priority": "high",
         "details": "npm init으로 package.json 생성, Express.js 5.1.0, Prisma ORM 6.4.1, TypeScript 최신 버전, cors, helmet, dotenv, morgan 설치. 폴더 구조: src/{app.ts,server.ts,routes}, prisma/{schema.prisma,migrations}. tsconfig.json 설정으로 strict mode 활성화. nodemon과 ts-node 개발 의존성 추가. Express 5.x의 Promise 지원 및 새로운 라우팅 문법 적용.",
@@ -16,64 +16,113 @@
             "title": "프로젝트 초기화 및 핵심 의존성 설치",
             "description": "npm init으로 package.json 생성하고 Express 5.1.0과 Prisma 6.4.1 설치",
             "details": "npm install express@^5.1.0 @prisma/client@^6.4.1 및 개발 의존성으로 prisma@^6.4.1 typescript@latest ts-node@latest @types/node@latest @types/express@latest 설치",
-            "status": "pending"
+            "status": "done"
           },
           {
             "id": "1.2",
             "title": "추가 유틸리티 패키지 설치",
             "description": "보안, 로깅, CORS 처리를 위한 추가 패키지 설치",
             "details": "npm install dotenv cors helmet morgan 및 타입 정의 npm install --save-dev @types/cors @types/morgan nodemon 설치",
-            "status": "pending"
+            "status": "done"
           },
           {
             "id": "1.3",
             "title": "Prisma ORM 초기화",
             "description": "Prisma 스키마 파일 생성 및 기본 설정",
             "details": "npx prisma init 실행하여 prisma/schema.prisma 파일과 .env 파일 생성. 데이터베이스 연결 설정 준비",
-            "status": "pending"
+            "status": "done"
           },
           {
             "id": "1.4",
             "title": "프로젝트 폴더 구조 생성",
             "description": "Express 5.x와 Prisma에 최적화된 폴더 구조 생성",
             "details": "backend/ 루트에 prisma/{schema.prisma,migrations/}, src/{app.ts,server.ts,routes/} 폴더 구조 생성",
-            "status": "pending"
+            "status": "done"
           },
           {
             "id": "1.5",
             "title": "TypeScript 설정 파일 구성",
             "description": "Express 5.x와 Prisma 호환 TypeScript 설정",
             "details": "tsconfig.json에서 strict mode 활성화, ES2020+ 타겟 설정, Prisma 클라이언트 타입 지원 설정",
-            "status": "pending"
+            "status": "done"
           },
           {
             "id": "1.6",
             "title": "Express 5.x 기본 서버 설정",
             "description": "Express 5.x의 새로운 기능을 활용한 기본 서버 구성",
             "details": "src/app.ts에서 Express 5.x Promise 지원 활용, helmet, cors, morgan 미들웨어 설정. src/server.ts에서 서버 시작 로직 분리",
-            "status": "pending"
+            "status": "done"
           },
           {
             "id": "1.7",
             "title": "개발 환경 스크립트 설정",
             "description": "package.json에 개발 및 빌드 스크립트 추가",
             "details": "dev: nodemon src/server.ts, build: tsc, start: node dist/server.js, db:generate: prisma generate 스크립트 설정",
-            "status": "pending"
+            "status": "done"
           }
         ]
       },
       {
         "id": 2,
         "title": "데이터베이스 설정 및 연결",
-        "description": "PostgreSQL 데이터베이스 설정 및 연결 구성",
-        "details": "pg 8.11+ 및 @types/pg 설치. src/config/database.ts에서 connection pool 설정. 환경변수로 DB_HOST, DB_PORT, DB_NAME, DB_USER, DB_PASSWORD 관리. 연결 상태 확인 헬스체크 엔드포인트 구현.",
-        "testStrategy": "데이터베이스 연결 테스트, connection pool 동작 확인, 환경변수 로딩 테스트",
-        "priority": "high",
+        "description": "SQLite 데이터베이스 설정 및 연결 구성",
+        "status": "done",
         "dependencies": [
           1
         ],
-        "status": "pending",
-        "subtasks": []
+        "priority": "high",
+        "details": "Prisma를 사용하여 SQLite 데이터베이스 설정. schema.prisma에서 SQLite provider 구성. 데이터베이스 파일 경로를 ./dev.db로 설정. src/config/database.ts에서 Prisma Client 초기화 및 연결 관리. SQLite 특성에 맞는 연결 설정 구현. 연결 상태 확인 헬스체크 엔드포인트 구현.",
+        "testStrategy": "SQLite 데이터베이스 연결 테스트, Prisma Client 초기화 확인, 데이터베이스 파일 생성 및 접근 테스트, 헬스체크 엔드포인트 동작 확인",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Prisma 및 SQLite 관련 패키지 설치",
+            "description": "프로젝트에 Prisma CLI, Prisma Client, 그리고 SQLite 드라이버를 설치합니다.",
+            "dependencies": [],
+            "details": "npm install prisma @prisma/client sqlite3 명령어를 사용하여 필요한 패키지를 설치합니다.\n<info added on 2025-06-21T10:33:25.709Z>\n작업 완료: Prisma CLI, Prisma Client, SQLite 관련 패키지가 성공적으로 설치되었습니다.\n\n설치된 패키지:\n- @prisma/client@^6.10.1 (의존성)\n- prisma@^6.10.1 (개발 의존성)\n- sqlite3은 Prisma에 내장되어 별도 설치 불필요\n\n모든 패키지가 정상적으로 설치되고 vulnerabilities 없이 완료되었습니다.\n</info added on 2025-06-21T10:33:25.709Z>",
+            "status": "done"
+          },
+          {
+            "id": 2,
+            "title": "Prisma 초기화 및 환경변수 파일(.env) 설정",
+            "description": "Prisma를 초기화하고, SQLite 데이터베이스 파일 경로를 환경변수로 지정합니다.",
+            "dependencies": [
+              1
+            ],
+            "details": "npx prisma init --datasource-provider sqlite 명령어로 Prisma를 초기화하고, .env 파일에 DATABASE_URL=\"file:./dev.db\"를 추가합니다.",
+            "status": "done"
+          },
+          {
+            "id": 3,
+            "title": "Prisma 스키마 정의 및 마이그레이션 적용",
+            "description": "prisma/schema.prisma 파일에서 데이터 모델을 정의하고, 마이그레이션을 적용하여 데이터베이스 파일을 생성합니다.",
+            "dependencies": [
+              2
+            ],
+            "details": "schema.prisma 파일에 모델을 작성한 후 npx prisma migrate dev --name init 명령어로 마이그레이션을 실행합니다.",
+            "status": "done"
+          },
+          {
+            "id": 4,
+            "title": "Prisma Client를 통한 DB 연결 및 헬스체크 엔드포인트 구현",
+            "description": "Prisma Client를 사용해 데이터베이스 연결을 검증하고, Express 등에서 헬스체크 엔드포인트를 구현합니다.",
+            "dependencies": [
+              3
+            ],
+            "details": "Prisma Client를 import하여 연결 테스트 및 /health와 같은 엔드포인트에서 DB 연결 상태를 확인하는 코드를 작성합니다.",
+            "status": "done"
+          },
+          {
+            "id": 5,
+            "title": "연결 테스트 및 환경변수 로딩 검증",
+            "description": "애플리케이션을 실행하여 환경변수 로딩과 DB 연결이 정상적으로 동작하는지 확인합니다.",
+            "dependencies": [
+              4
+            ],
+            "details": "서버를 실행하고 헬스체크 엔드포인트에 요청하여 DB 연결 및 환경변수 적용 여부를 검증합니다.",
+            "status": "done"
+          }
+        ]
       },
       {
         "id": 3,
@@ -85,7 +134,7 @@
         "dependencies": [
           1
         ],
-        "status": "pending",
+        "status": "in-progress",
         "subtasks": []
       },
       {
@@ -729,7 +778,7 @@
     ],
     "metadata": {
       "created": "2025-06-21T09:16:05.757Z",
-      "updated": "2025-06-21T09:16:05.757Z",
+      "updated": "2025-06-21T10:38:10.119Z",
       "description": "Tasks for master context"
     }
   }
