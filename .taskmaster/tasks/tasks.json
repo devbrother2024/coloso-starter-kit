@@ -255,7 +255,7 @@
         "id": 5,
         "title": "사용자 데이터베이스 스키마 설계",
         "description": "사용자, 주문, 상품 등 핵심 엔티티의 데이터베이스 스키마 설계 및 Prisma ORM을 통한 마이그레이션",
-        "status": "pending",
+        "status": "done",
         "dependencies": [
           2
         ],
@@ -269,7 +269,7 @@
             "description": "프로젝트에 Prisma ORM 6.4.1을 설치하고, PostgreSQL 데이터베이스 연결을 위한 초기 설정을 구성합니다.",
             "dependencies": [],
             "details": "Prisma CLI 및 Client 설치, prisma init 명령어로 기본 설정 파일 생성, schema.prisma 파일에 PostgreSQL datasource 및 client generator 설정, .env 파일에 DATABASE_URL 환경변수 설정.",
-            "status": "pending"
+            "status": "done"
           },
           {
             "id": 2,
@@ -279,7 +279,7 @@
               1
             ],
             "details": "id(String, @id @default(cuid())), email(String, @unique), password(String), name(String), role(UserRole enum), createdAt(DateTime, @default(now())), updatedAt(DateTime, @updatedAt) 등 주요 필드를 정의하고, 기존 mock 데이터 구조와 호환성을 유지합니다.",
-            "status": "pending"
+            "status": "done"
           },
           {
             "id": 3,
@@ -289,7 +289,7 @@
               2
             ],
             "details": "Product 모델(id, name, price, category, type 등), Course 모델(id, title, description, duration, level 등), VoucherTemplate 모델(id, name, discountType, discountValue, validFrom, validTo 등)을 정의하고, JSON 필드나 enum 타입을 적절히 활용합니다.",
-            "status": "pending"
+            "status": "done"
           },
           {
             "id": 4,
@@ -299,7 +299,7 @@
               3
             ],
             "details": "Order 모델(id, userId, status, total, createdAt 등), OrderItem 모델(id, orderId, productId, quantity, price 등), Voucher 모델(id, templateId, code, userId, isUsed 등)을 정의하고, 적절한 관계 매핑(@relation)을 설정합니다.",
-            "status": "pending"
+            "status": "done"
           },
           {
             "id": 5,
@@ -309,7 +309,7 @@
               4
             ],
             "details": "Enrollment 모델(userId, courseId, enrolledAt, status 등), VoucherUsageHistory 모델(id, voucherId, userId, usedAt 등)을 정의하고, 모든 모델 간의 @relation 설정, 외래키 제약조건, onDelete/onUpdate 동작을 명확히 정의합니다.",
-            "status": "pending"
+            "status": "done"
           },
           {
             "id": 6,
@@ -319,7 +319,7 @@
               5
             ],
             "details": "prisma migrate dev 명령어로 마이그레이션 생성 및 적용, prisma generate로 Prisma Client 생성, 데이터베이스 테이블 및 관계가 정상적으로 생성되는지 확인, Prisma Studio를 통한 스키마 검증.",
-            "status": "pending"
+            "status": "done"
           },
           {
             "id": 7,
@@ -329,7 +329,7 @@
               6
             ],
             "details": "기본 CRUD 작업 테스트, include/select를 사용한 관계 쿼리 테스트, 타입스크립트 타입 추론 확인, 복잡한 쿼리(where, orderBy, aggregate 등) 동작 검증.",
-            "status": "pending"
+            "status": "done"
           }
         ]
       },
@@ -337,7 +337,7 @@
         "id": 6,
         "title": "입력 검증 시스템 구현",
         "description": "API 입력 데이터 검증을 위한 Zod 스키마 구현 (Prisma 타입 연동)",
-        "status": "pending",
+        "status": "done",
         "dependencies": [
           1
         ],
@@ -816,7 +816,7 @@
     ],
     "metadata": {
       "created": "2025-06-21T09:16:05.757Z",
-      "updated": "2025-06-21T10:45:44.418Z",
+      "updated": "2025-06-21T11:04:21.916Z",
       "description": "Tasks for master context"
     }
   }

@@ -120,3 +120,6 @@ dev-debug.log
 *.sln
 *.sw?
 # OS specific
+
+mcp.json
+server/keys/

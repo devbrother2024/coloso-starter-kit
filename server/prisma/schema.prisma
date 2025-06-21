@@ -5,18 +5,274 @@ generator client {
   provider = "prisma-client-js"
 }
 
+generator zod {
+  provider              = "zod-prisma-types"
+  output                = "../src/schemas/zod"
+  createInputTypes      = false
+  createModelTypes      = true
+  addInputTypeValidation= true
+}
+
 datasource db {
   provider = "sqlite"
   url      = env("DATABASE_URL")
 }
 
-// 기본 User 모델 (향후 확장 예정)
+// =================================================================
+// Enums
+// =================================================================
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum OrderState {
+  PENDING
+  COMPLETED
+  CANCELLED
+  REFUNDED
+}
+
+enum PaymentMethod {
+  CARD
+  PAYPAL
+  PROMOTION
+}
+
+enum VoucherType {
+  WELCOME
+  DOWNLOAD
+  DEFAULT
+}
+
+enum VoucherDiscountType {
+  AMOUNT
+  RATE
+}
+
+enum VoucherPeriodType {
+  DURATION
+  SPECIFIED_PERIOD
+}
+
+// =================================================================
+// Models
+// =================================================================
+
 model User {
-  id        Int      @id @default(autoincrement())
-  email     String   @unique
-  name      String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id                        Int      @id @default(autoincrement())
+  name                      String
+  email                     String   @unique
+  password                  String
+  role                      Role     @default(USER)
+  maskedEmail               String?
+  phone                     String?
+  language                  String?
+  country                   String?
+  postalCode                String?
+  address                   String?
+  addressExtra              String?
+  phoneCertifiedAt          DateTime?
+  emailMarketingAgreedAt    DateTime?
+  phoneMarketingAgreedAt    DateTime?
+  createdAt                 DateTime @default(now())
+  updatedAt                 DateTime @updatedAt
+
+  orders       Order[]
+  enrollments  Enrollment[]
+  vouchers     Voucher[]
+  voucherUsages VoucherUsageHistory[]
 
   @@map("users")
+}
+
+model Course {
+  id                        Int      @id @default(autoincrement())
+  title                     String
+  publicTitle               String?
+  publicDescription         String?
+  description               String?
+  state                     String   @default("ONGOING")
+  slug                      String?  @unique
+  instructor                String?
+  keywords                  String?
+  qualification             String?
+  clipCount                 Int?
+  runningTime               Int?
+  paidPeriod                String?
+  openAt                    DateTime?
+  
+  desktopCoverImage         String?
+  mobileCoverImage          String?
+  desktopCardAsset          String?
+  coverVideo                String?
+  
+  createdAt                 DateTime @default(now())
+  updatedAt                 DateTime @updatedAt
+
+  products     Product[]
+  enrollments  Enrollment[]
+  category     Category?    @relation(fields: [categoryId], references: [id])
+  categoryId   Int?
+
+  @@map("courses")
+}
+
+model Category {
+  id          Int      @id @default(autoincrement())
+  name        String
+  slug        String   @unique
+  description String?
+  
+  courses Course[]
+
+  @@map("categories")
+}
+
+model Product {
+  id              Int      @id @default(autoincrement())
+  title           String
+  publicTitle     String?
+  subtitle        String?
+  description     String?
+  state           String   @default("NORMAL")
+  currency        String   @default("USD")
+  listPrice       Float
+  salePrice       Float
+  discountAmount  Float?
+  discountPercent Float?
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  course    Course? @relation(fields: [courseId], references: [id])
+  courseId  Int?
+  
+  orderItems OrderItem[]
+
+  @@map("products")
+}
+
+model Order {
+  id              Int        @id @default(autoincrement())
+  state           OrderState @default(PENDING)
+  listPrice       Float
+  salePrice       Float
+  discountPrice   Float
+  
+  paymentMethod   PaymentMethod?
+  paymentPg       String?
+  paymentState    String?
+  paymentAt       DateTime?
+
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+
+  user     User       @relation(fields: [userId], references: [id])
+  userId   Int
+  
+  orderItems OrderItem[]
+
+  @@map("orders")
+}
+
+model OrderItem {
+  id         Int      @id @default(autoincrement())
+  quantity   Int
+  listPrice  Float
+  salePrice  Float
+
+  order     Order   @relation(fields: [orderId], references: [id])
+  orderId   Int
+  
+  product   Product @relation(fields: [productId], references: [id])
+  productId Int
+
+  @@map("order_items")
+}
+
+model VoucherTemplate {
+  id                Int                  @id @default(autoincrement())
+  type              VoucherType
+  title             String
+  publicDescription String?
+  code              String               @unique
+  currency          String               @default("USD")
+  discountType      VoucherDiscountType
+  discountAmount    Float?
+  discountRate      Float?
+  maxDiscountAmount Float?
+  minPaymentAmount  Float?
+  total             Int
+  stock             Int
+  periodType        VoucherPeriodType
+  periodDuration    Int?
+  periodBeginAt     DateTime?
+  periodEndAt       DateTime?
+  redeemBeginAt     DateTime?
+  redeemEndAt       DateTime?
+
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  
+  vouchers Voucher[]
+
+  @@map("voucher_templates")
+}
+
+model Voucher {
+  id                Int      @id @default(autoincrement())
+  isUsed            Boolean  @default(false)
+  
+  useBeginAt        DateTime?
+  useEndAt          DateTime?
+
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  template   VoucherTemplate @relation(fields: [templateId], references: [id])
+  templateId Int
+
+  user   User? @relation(fields: [userId], references: [id])
+  userId Int?
+  
+  usageHistory VoucherUsageHistory?
+
+  @@map("vouchers")
+}
+
+model VoucherUsageHistory {
+  id         Int      @id @default(autoincrement())
+  usedAt     DateTime @default(now())
+  
+  voucher   Voucher @relation(fields: [voucherId], references: [id])
+  voucherId Int     @unique
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId Int
+  
+  @@map("voucher_usage_histories")
+}
+
+
+model Enrollment {
+  id                Int      @id @default(autoincrement())
+  state             String   @default("ONGOING")
+  
+  periodBeginAt     DateTime?
+  periodEndAt       DateTime?
+  completedAt       DateTime?
+  
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  user     User   @relation(fields: [userId], references: [id])
+  userId   Int
+  
+  course   Course @relation(fields: [courseId], references: [id])
+  courseId Int
+  
+  @@unique([userId, courseId])
+  @@map("enrollments")
 }
