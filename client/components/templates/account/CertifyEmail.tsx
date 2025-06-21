@@ -29,7 +29,7 @@ const CertifyEmail = ({ signUpForm, dispatchSignUpForm }: TypeSignUpForm) => {
 
   const { count, timer, isCounting, setIsCounting, setIsResetCount } = useCountdown(CertificationTimer.DEFAULT);
   const executeNotifications = useToast();
-  const [dialogType, setDialogType] = useState('');
+  const [dialogType, setDialogType] = useState(DialogModalType.DEFAULT);
   const { isActiveDialog, onOpenDialog, onCloseDialog } = useDialog();
   const t = useTranslation({ scope: 'AccountSystem' });
 

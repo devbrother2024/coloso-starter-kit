@@ -53,18 +53,6 @@ const SignIn = () => {
         },
       });
     },
-    onError: ({ cause }: { cause: string }) => {
-      const isHibernated = cause === DialogModalType.HIBERNATED;
-      const causeType = cause === DialogModalType.INVALID ? DialogModalType.FAILED_SIGN_IN : cause;
-
-      if (isHibernated) {
-        onOpenHibernatedDialog();
-        return;
-      }
-
-      setDialogType(causeType);
-      onOpenAccountDialog();
-    },
   });
 
   const onSubmitLogin = (event: FormEvent<HTMLFormElement>) => {

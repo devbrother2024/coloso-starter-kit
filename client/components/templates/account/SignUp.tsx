@@ -8,7 +8,6 @@ import { useMutation } from '@tanstack/react-query';
 import { signUp } from '@/apis/auth';
 import Button from '@/components/elements/Button';
 import Link from '@/components/elements/Link';
-import Dropdown from '@/components/modules/common/Dropdown';
 import AccountDialog from '@/components/modules/dialogs/AccountDialog';
 import AccountMarketingAgreementDialog from '@/components/modules/dialogs/AccountMarketingAgreementDialog';
 import useAuth from '@/hooks/client/useAuth';
@@ -17,7 +16,7 @@ import useForm from '@/hooks/client/useForm';
 import useToast from '@/hooks/client/useToast';
 import useTranslation from '@/hooks/client/useTranslation';
 import { DialogModalType } from '@/policy/account';
-import { CustomerCountry, CustomerCountryLabel, CustomerLanguage, CustomerLanguageLabel } from '@/policy/language';
+import { CustomerCountry, CustomerLanguage } from '@/policy/language';
 import { NotificationErrorLabels, NotificationLabels } from '@/policy/notificationLabels';
 import { isValidEmail, isValidName } from '@/utils/validate';
 
@@ -166,9 +165,6 @@ const SignUp = () => {
 
         <VerifyPassword signUpForm={form} dispatchSignUpForm={dispatchForm} />
 
-        <Dropdown label="Language" itemsObject={CustomerLanguageLabel} item={language} setItem={setUserLanguage} />
-        <Dropdown label="Country" itemsObject={CustomerCountryLabel} item={country} setItem={setUserCountry} />
-
         <Button className="btn--wide" disabled={!isActiveSignUpButton || isSignUpPending}>
           {t('SignUp')}
         </Button>
@@ -196,8 +192,8 @@ const SignUp = () => {
         }}
       />
       <AccountDialog
-        isActive={isActiveAccountDialog}
         modalState={DialogModalType.INVALID}
+        isActive={isActiveAccountDialog}
         onClose={onCloseAccountDialog}
       />
     </>

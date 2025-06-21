@@ -30,10 +30,14 @@ export default function useTranslation({ locale, scope }: TypeUseTranslationPara
       debugger;
     }
 
+    const scp = scope ?? opts!.scope;
+    const model = token[scp][key] ?? key;
+    if (!model) {
+      logger.warn(`i18n model not found, scp.key = ${scp}.${key} `);
+      return '';
+    }
+    if (!opts) return model;
     try {
-      const scp = scope ?? opts!.scope;
-      const model = token[scp][key] ?? key;
-      if (!opts) return model;
       return model.replace(/{([^{}]*)}/g, (tag: string, match: string) => opts[match] ?? tag);
     } catch (err) {
       const error = err as Error;
