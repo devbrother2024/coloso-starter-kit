@@ -108,3 +108,15 @@ sw.*
 # custom config
 customConfig.js
 *.customConfig.js
+
+# Added by Task Master AI
+logs
+dev-debug.log
+# Environment variables
+# Editor directories and files
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+# OS specific
