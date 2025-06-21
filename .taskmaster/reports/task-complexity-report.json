@@ -1,0 +1,213 @@
+{
+	"meta": {
+		"generatedAt": "2025-06-21T09:16:53.204Z",
+		"tasksAnalyzed": 25,
+		"totalTasks": 25,
+		"analysisCount": 25,
+		"thresholdScore": 6,
+		"projectName": "Taskmaster",
+		"usedResearch": true
+	},
+	"complexityAnalysis": [
+		{
+			"taskId": 1,
+			"taskTitle": "Express 백엔드 프로젝트 초기 설정",
+			"complexityScore": 5,
+			"recommendedSubtasks": 6,
+			"expansionPrompt": "분할 예시: 1) npm init 및 package.json 생성, 2) 필수 의존성 설치 (express, typescript, cors 등), 3) 폴더 구조 생성 (src/routes 등), 4) tsconfig.json strict mode 설정, 5) 개발 의존성(nodemon, ts-node) 설치, 6) 기본 Express 서버 실행 테스트",
+			"reasoning": "초기 설정은 표준화된 절차이지만, 의존성 설치, 폴더 구조 설계, TypeScript 환경 구성 등 여러 단계가 포함되어 있어 중간 난이도다. 각 단계가 독립적으로 진행될 수 있으므로 6개 정도의 세부 작업으로 나누는 것이 적절하다.[2][3][4]"
+		},
+		{
+			"taskId": 2,
+			"taskTitle": "데이터베이스 설정 및 연결",
+			"complexityScore": 6,
+			"recommendedSubtasks": 5,
+			"expansionPrompt": "분할 예시: 1) pg 및 @types/pg 설치, 2) 환경변수 파일(.env) 설정, 3) src/config/database.ts에서 connection pool 구현, 4) DB 연결 상태 헬스체크 엔드포인트 구현, 5) 연결 테스트 및 환경변수 로딩 검증",
+			"reasoning": "DB 연결은 환경변수 관리, 커넥션 풀 설정, 헬스체크 등 여러 기술적 요소가 결합되어 있으며, 실수 시 장애로 이어질 수 있어 세분화가 필요하다."
+		},
+		{
+			"taskId": 3,
+			"taskTitle": "기본 미들웨어 및 보안 설정",
+			"complexityScore": 5,
+			"recommendedSubtasks": 5,
+			"expansionPrompt": "분할 예시: 1) helmet 보안 헤더 적용, 2) cors 설정 및 도메인 제한, 3) express.json() body parser 적용, 4) express-rate-limit 적용, 5) morgan 로깅 미들웨어 추가 및 테스트",
+			"reasoning": "여러 미들웨어를 각각 설치하고 설정해야 하며, 보안 정책과 로깅 등 다양한 측면을 다루므로 각 미들웨어별로 분리하는 것이 효율적이다."
+		},
+		{
+			"taskId": 4,
+			"taskTitle": "JWT 인증 시스템 구현",
+			"complexityScore": 7,
+			"recommendedSubtasks": 6,
+			"expansionPrompt": "분할 예시: 1) jsonwebtoken 설치 및 기본 설정, 2) 토큰 생성/검증 함수 구현, 3) accessToken/refreshToken 만료 정책 적용, 4) RS256 알고리즘 키 관리, 5) Redis 연동(블랙리스트), 6) 단위 테스트 작성",
+			"reasoning": "JWT 인증은 보안상 중요한 로직과 외부 시스템(Redis) 연동, 만료 정책 등 복합적인 요소가 많아 세분화가 필요하다."
+		},
+		{
+			"taskId": 5,
+			"taskTitle": "사용자 데이터베이스 스키마 설계",
+			"complexityScore": 6,
+			"recommendedSubtasks": 6,
+			"expansionPrompt": "분할 예시: 1) Knex.js 설치 및 마이그레이션 환경 구축, 2) users 테이블 설계, 3) products 테이블 설계, 4) orders 테이블 설계, 5) courses/enrollments 테이블 설계, 6) 외래키 및 제약조건 적용 및 테스트",
+			"reasoning": "여러 테이블과 관계, 마이그레이션 도구 설정까지 포함되어 있어 각 엔티티별로 분리하는 것이 적합하다."
+		},
+		{
+			"taskId": 6,
+			"taskTitle": "입력 검증 시스템 구현",
+			"complexityScore": 4,
+			"recommendedSubtasks": 4,
+			"expansionPrompt": "분할 예시: 1) zod 설치, 2) src/schemas 폴더 구조 생성, 3) 각 API별 검증 스키마 작성, 4) 미들웨어로 자동 검증 적용 및 테스트",
+			"reasoning": "입력 검증은 비교적 단순하지만, 스키마별로 분리 및 미들웨어 적용이 필요하므로 4단계로 나누는 것이 적절하다."
+		},
+		{
+			"taskId": 7,
+			"taskTitle": "Auth API - 회원가입 구현",
+			"complexityScore": 6,
+			"recommendedSubtasks": 6,
+			"expansionPrompt": "분할 예시: 1) 입력 검증 로직 구현, 2) 이메일 중복 확인, 3) 비밀번호 해싱(bcrypt), 4) 사용자 DB 저장, 5) 환영 이메일 발송 준비, 6) 테스트 코드 작성",
+			"reasoning": "회원가입은 검증, 해싱, DB 저장, 이메일 발송 등 여러 단계를 거치므로 각 단계별로 분리 필요."
+		},
+		{
+			"taskId": 8,
+			"taskTitle": "Auth API - 로그인 구현",
+			"complexityScore": 6,
+			"recommendedSubtasks": 6,
+			"expansionPrompt": "분할 예시: 1) 입력 검증, 2) 사용자 조회 및 비밀번호 비교, 3) 토큰 발급, 4) 실패 시 계정 잠금 처리, 5) 에러 메시지 및 상태코드 처리, 6) 테스트 코드 작성",
+			"reasoning": "로그인은 인증, 토큰 발급, 계정 잠금 등 보안 관련 로직이 많아 세분화가 필요하다."
+		},
+		{
+			"taskId": 9,
+			"taskTitle": "Auth API - 토큰 갱신 및 로그아웃 구현",
+			"complexityScore": 6,
+			"recommendedSubtasks": 5,
+			"expansionPrompt": "분할 예시: 1) refreshToken 검증, 2) accessToken 재발급, 3) 로그아웃 시 블랙리스트 처리, 4) 클라이언트 쿠키 삭제, 5) 테스트 코드 작성",
+			"reasoning": "토큰 갱신과 로그아웃은 각각 별도의 흐름과 보안 처리가 필요해 5단계로 분리."
+		},
+		{
+			"taskId": 10,
+			"taskTitle": "인증 미들웨어 구현",
+			"complexityScore": 5,
+			"recommendedSubtasks": 4,
+			"expansionPrompt": "분할 예시: 1) Authorization 헤더 파싱, 2) JWT 검증, 3) req.user에 정보 추가, 4) 블랙리스트 및 에러 응답 처리",
+			"reasoning": "미들웨어는 비교적 단순하지만, 각 기능별로 분리하면 유지보수성이 높아진다."
+		},
+		{
+			"taskId": 11,
+			"taskTitle": "User API - 사용자 정보 조회/수정 구현",
+			"complexityScore": 5,
+			"recommendedSubtasks": 5,
+			"expansionPrompt": "분할 예시: 1) GET /api/users/me 구현, 2) PUT /api/users/me 구현, 3) 이메일 변경 시 재인증 처리, 4) 민감 정보 분리, 5) 테스트 코드 작성",
+			"reasoning": "조회와 수정, 재인증 등 여러 흐름이 있어 각 기능별로 분리 필요."
+		},
+		{
+			"taskId": 12,
+			"taskTitle": "Product API 기본 구현",
+			"complexityScore": 5,
+			"recommendedSubtasks": 5,
+			"expansionPrompt": "분할 예시: 1) 상품 목록 조회(페이지네이션/필터), 2) 상품 상세 조회, 3) 관련 강의 정보 포함, 4) 캐싱 헤더 적용, 5) 이미지 URL 변환 및 테스트",
+			"reasoning": "목록, 상세, 캐싱 등 각 기능별로 분리하면 개발 및 테스트가 용이하다."
+		},
+		{
+			"taskId": 13,
+			"taskTitle": "Course API 기본 구현",
+			"complexityScore": 5,
+			"recommendedSubtasks": 4,
+			"expansionPrompt": "분할 예시: 1) 강의 상세 정보 조회, 2) 챕터/미리보기/난이도 등 세부 정보 구현, 3) 수강 권한 확인, 4) 테스트 코드 작성",
+			"reasoning": "단일 엔드포인트이나, 권한 확인 등 추가 로직이 있어 4단계로 분리."
+		},
+		{
+			"taskId": 14,
+			"taskTitle": "Order API - 주문 생성 구현",
+			"complexityScore": 6,
+			"recommendedSubtasks": 6,
+			"expansionPrompt": "분할 예시: 1) 입력 검증, 2) 재고 확인, 3) 가격/쿠폰 계산, 4) 트랜잭션 처리, 5) 결제 정보 검증, 6) 테스트 코드 작성",
+			"reasoning": "주문 생성은 검증, 트랜잭션, 결제 등 복합 로직이 많아 세분화 필요."
+		},
+		{
+			"taskId": 15,
+			"taskTitle": "Order API - 주문 조회 구현",
+			"complexityScore": 5,
+			"recommendedSubtasks": 5,
+			"expansionPrompt": "분할 예시: 1) 주문 목록 조회(필터/페이지네이션), 2) 주문 상세 조회, 3) 권한 확인, 4) 결제/배송 정보 포함, 5) 테스트 코드 작성",
+			"reasoning": "조회와 권한, 상세 정보 등 각 기능별로 분리하면 명확하다."
+		},
+		{
+			"taskId": 16,
+			"taskTitle": "User API - 사용자 강의/쿠폰 목록 구현",
+			"complexityScore": 5,
+			"recommendedSubtasks": 4,
+			"expansionPrompt": "분할 예시: 1) 강의 목록 조회, 2) 쿠폰 목록 조회, 3) JOIN 쿼리 최적화, 4) 테스트 코드 작성",
+			"reasoning": "두 엔드포인트와 쿼리 최적화가 주요 포인트로, 4단계로 분리."
+		},
+		{
+			"taskId": 17,
+			"taskTitle": "Enrollment API 구현",
+			"complexityScore": 5,
+			"recommendedSubtasks": 5,
+			"expansionPrompt": "분할 예시: 1) 수강 신청 구현, 2) 중복/선수 강의 검증, 3) 수강 목록 조회, 4) 수강 취소 기능, 5) 테스트 코드 작성",
+			"reasoning": "신청, 검증, 조회, 취소 등 각 흐름별로 분리 필요."
+		},
+		{
+			"taskId": 18,
+			"taskTitle": "Voucher API 기본 구현",
+			"complexityScore": 5,
+			"recommendedSubtasks": 5,
+			"expansionPrompt": "분할 예시: 1) 쿠폰 조회, 2) 쿠폰 적용(할인 계산), 3) 사용 조건 검증, 4) 중복 사용 방지/이력 관리, 5) 테스트 코드 작성",
+			"reasoning": "조회, 적용, 검증, 이력 관리 등 각 기능별로 분리."
+		},
+		{
+			"taskId": 19,
+			"taskTitle": "Voucher API - 쿠폰 다운로드 구현",
+			"complexityScore": 5,
+			"recommendedSubtasks": 4,
+			"expansionPrompt": "분할 예시: 1) 쿠폰 코드 생성, 2) 다운로드 제한/이력 관리, 3) 동시성 제어, 4) 테스트 코드 작성",
+			"reasoning": "다운로드, 제한, 동시성 등 각 기능별로 분리."
+		},
+		{
+			"taskId": 20,
+			"taskTitle": "Display API 구현",
+			"complexityScore": 4,
+			"recommendedSubtasks": 4,
+			"expansionPrompt": "분할 예시: 1) 메인 콘텐츠 데이터 설계, 2) Redis 캐싱 적용, 3) 관리자 패널 연동 설계, 4) 테스트 코드 작성",
+			"reasoning": "단일 엔드포인트이나, 캐싱과 관리자 연동 등 추가 로직이 있어 4단계로 분리."
+		},
+		{
+			"taskId": 21,
+			"taskTitle": "Search API 기본 구현",
+			"complexityScore": 6,
+			"recommendedSubtasks": 6,
+			"expansionPrompt": "분할 예시: 1) 통합 검색 쿼리 설계, 2) Full-Text Search/Elasticsearch 연동, 3) 자동완성 구현, 4) 인기 검색어/하이라이팅, 5) 페이지네이션, 6) 테스트 코드 작성",
+			"reasoning": "검색은 다양한 기능(자동완성, 하이라이팅 등)이 포함되어 있어 세분화 필요."
+		},
+		{
+			"taskId": 22,
+			"taskTitle": "Exchange API 구현",
+			"complexityScore": 4,
+			"recommendedSubtasks": 4,
+			"expansionPrompt": "분할 예시: 1) 외부 환율 API 연동, 2) 캐싱 로직 구현, 3) 지원 통화 관리, 4) 환율 변동 알림 준비 및 테스트",
+			"reasoning": "외부 API 연동과 캐싱, 알림 등 각 기능별로 분리."
+		},
+		{
+			"taskId": 23,
+			"taskTitle": "API 문서화 및 Swagger 설정",
+			"complexityScore": 5,
+			"recommendedSubtasks": 5,
+			"expansionPrompt": "분할 예시: 1) swagger-jsdoc/swagger-ui-express 설치, 2) JSDoc 주석 작성, 3) 요청/응답 스키마 문서화, 4) /api-docs 엔드포인트 구현, 5) 문서 접근성/정확성 테스트",
+			"reasoning": "설치, 주석, 스키마, 엔드포인트, 테스트 등 각 단계별로 분리."
+		},
+		{
+			"taskId": 24,
+			"taskTitle": "로깅 및 모니터링 시스템 구현",
+			"complexityScore": 6,
+			"recommendedSubtasks": 6,
+			"expansionPrompt": "분할 예시: 1) winston 설치 및 기본 설정, 2) 로그 레벨/파일 로테이션 적용, 3) 에러 알림(슬랙/이메일) 연동, 4) 성능 메트릭 수집, 5) PM2/Docker 환경 적용, 6) 테스트 코드 작성",
+			"reasoning": "로깅, 알림, 성능 모니터링 등 다양한 시스템 연동이 필요해 세분화 필요."
+		},
+		{
+			"taskId": 25,
+			"taskTitle": "통합 테스트 및 성능 최적화",
+			"complexityScore": 8,
+			"recommendedSubtasks": 7,
+			"expansionPrompt": "분할 예시: 1) Jest/supertest 환경 구축, 2) E2E 테스트 작성, 3) 부하 테스트(Artillery/k6), 4) DB 쿼리 최적화, 5) 인덱스 추가, 6) 응답 시간/메모리 사용량 측정, 7) 메모리 누수 검사",
+			"reasoning": "통합 테스트와 성능 최적화는 시스템 전반을 아우르며, 다양한 도구와 기법이 필요해 고난이도이며 세분화가 필수적이다."
+		}
+	]
+}
