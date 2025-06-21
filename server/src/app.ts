@@ -3,7 +3,10 @@ import cors from 'cors'
 import helmet from 'helmet'
 import morgan from 'morgan'
 import dotenv from 'dotenv'
+import rateLimit from 'express-rate-limit'
 import { checkDatabaseHealth } from './config/database'
+import authRoutes from './routes/auth'
+import protectedRoutes from './routes/protected'
 
 // Load environment variables
 dotenv.config()
@@ -13,11 +16,34 @@ const app = express()
 // Security middleware
 app.use(helmet())
 
+// Rate limiting middleware
+const limiter = rateLimit({
+    windowMs: 1 * 60 * 1000, // 1 minute
+    max: 100, // limit each IP to 100 requests per windowMs
+    message: {
+        error: 'Too many requests from this IP, please try again later.',
+        retryAfter: '1 minute'
+    },
+    standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+    legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+    handler: (req, res) => {
+        res.status(429).json({
+            error: 'Too many requests from this IP, please try again later.',
+            retryAfter: '1 minute',
+            timestamp: new Date().toISOString()
+        })
+    }
+})
+
+app.use(limiter)
+
 // CORS configuration
 app.use(
     cors({
         origin: process.env.CORS_ORIGIN || 'http://localhost:3000',
-        credentials: true
+        credentials: true,
+        methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+        allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
     })
 )
 
@@ -56,14 +82,19 @@ app.get('/health', async (req, res) => {
     }
 })
 
-// API routes will be added here
-app.use('/api', (req, res) => {
+// API routes
+app.use('/api/auth', authRoutes)
+app.use('/api/protected', protectedRoutes)
+
+app.get('/api', (req, res) => {
     res.status(200).json({
         message: 'API is running',
         version: '1.0.0',
         endpoints: {
             health: '/health',
-            api: '/api'
+            api: '/api',
+            auth: '/api/auth',
+            protected: '/api/protected'
         }
     })
 })

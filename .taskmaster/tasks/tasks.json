@@ -134,8 +134,46 @@
         "dependencies": [
           1
         ],
-        "status": "in-progress",
-        "subtasks": []
+        "status": "done",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "helmet 보안 헤더 적용",
+            "description": "helmet 미들웨어를 설치하고 설정하여 기본적인 보안 헤더들을 자동으로 적용합니다. XSS 보호, 콘텐츠 타입 스니핑 방지, 클릭재킹 방지 등의 보안 헤더를 설정합니다.",
+            "dependencies": [],
+            "details": "npm install helmet 후 app.use(helmet()) 설정, 필요시 개별 헤더 커스터마이징",
+            "status": "done"
+          },
+          {
+            "id": 2,
+            "title": "CORS 설정 및 도메인 제한",
+            "description": "cors 미들웨어를 설치하고 설정하여 Cross-Origin Resource Sharing을 관리합니다. 허용할 도메인, HTTP 메서드, 헤더 등을 명시적으로 설정합니다.",
+            "dependencies": [],
+            "details": "npm install cors 후 origin, methods, credentials 등의 옵션 설정",
+            "status": "done"
+          },
+          {
+            "id": 3,
+            "title": "express.json() body parser 적용",
+            "description": "Express 내장 JSON body parser를 적용하여 클라이언트로부터 전송되는 JSON 데이터를 파싱할 수 있도록 설정합니다. 요청 크기 제한도 함께 설정합니다.",
+            "dependencies": [
+              1,
+              2
+            ],
+            "details": "app.use(express.json({limit: '10mb'})) 설정 및 에러 핸들링",
+            "status": "done"
+          },
+          {
+            "id": 4,
+            "title": "express-rate-limit 및 morgan 로깅 미들웨어 추가",
+            "description": "express-rate-limit으로 API 호출 제한을 설정하고, morgan 미들웨어로 HTTP 요청 로깅을 구현합니다. 각각의 설정을 테스트하여 정상 동작을 확인합니다.",
+            "dependencies": [
+              3
+            ],
+            "details": "npm install express-rate-limit morgan 후 rate limiting 규칙 설정, morgan 로그 포맷 설정 및 테스트",
+            "status": "done"
+          }
+        ]
       },
       {
         "id": 4,
@@ -147,7 +185,7 @@
         "dependencies": [
           1
         ],
-        "status": "pending",
+        "status": "done",
         "subtasks": [
           {
             "id": 1,
@@ -155,7 +193,7 @@
             "description": "프로젝트에 jsonwebtoken 라이브러리를 설치하고, JWT 관련 기본 환경설정을 진행합니다.",
             "dependencies": [],
             "details": "npm 또는 yarn을 사용해 jsonwebtoken 패키지를 설치하고, 프로젝트 내에서 사용할 수 있도록 초기 설정 파일을 구성합니다.",
-            "status": "pending"
+            "status": "done"
           },
           {
             "id": 2,
@@ -165,7 +203,7 @@
               1
             ],
             "details": "accessToken과 refreshToken을 발급하는 함수, 그리고 토큰의 유효성을 검증하는 함수를 작성합니다.",
-            "status": "pending"
+            "status": "done"
           },
           {
             "id": 3,
@@ -175,7 +213,7 @@
               2
             ],
             "details": "각 토큰의 만료 시간을 환경변수 또는 설정 파일로 관리하며, 만료 시 처리 로직을 구현합니다.",
-            "status": "pending"
+            "status": "done"
           },
           {
             "id": 4,
@@ -185,7 +223,7 @@
               1
             ],
             "details": "키 파일을 안전하게 저장하고, 토큰 생성 및 검증 시 RS256 알고리즘을 적용하도록 설정합니다.",
-            "status": "pending"
+            "status": "done"
           },
           {
             "id": 5,
@@ -195,8 +233,8 @@
               2,
               3
             ],
-            "details": "redis 패키지를 설치하고, 블랙리스트에 토큰을 저장/조회하는 로직을 구현합니다.",
-            "status": "pending"
+            "details": "redis 패키지를 설치하고, 블랙리스트에 토큰을 저장/조회하는 로직을 구현합니다.\n<info added on 2025-06-21T10:39:36.497Z>\nRedis 연동 부분이 개발 요구사항에서 제외되었습니다. 현재 단계에서는 Redis 없이 JWT 인증 시스템을 구현하며, 토큰 블랙리스트 기능은 향후 필요시 추가할 예정입니다. 대신 메모리 기반의 간단한 블랙리스트 관리(예: Set 자료구조 활용)나 데이터베이스 테이블을 활용한 방법을 고려할 수 있습니다.\n</info added on 2025-06-21T10:39:36.497Z>",
+            "status": "done"
           },
           {
             "id": 6,
@@ -209,7 +247,7 @@
               5
             ],
             "details": "토큰 생성, 검증, 만료, 블랙리스트 등 모든 주요 기능에 대해 테스트 코드를 작성하여 안정성을 확보합니다.",
-            "status": "pending"
+            "status": "done"
           }
         ]
       },
@@ -778,7 +816,7 @@
     ],
     "metadata": {
       "created": "2025-06-21T09:16:05.757Z",
-      "updated": "2025-06-21T10:38:10.119Z",
+      "updated": "2025-06-21T10:45:44.418Z",
       "description": "Tasks for master context"
     }
   }
