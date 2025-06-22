@@ -7,6 +7,7 @@ import rateLimit from 'express-rate-limit'
 import { checkDatabaseHealth } from './config/database'
 import authRoutes from './routes/auth'
 import protectedRoutes from './routes/protected'
+import userRoutes from './routes/user'
 
 // Load environment variables
 dotenv.config()
@@ -99,7 +100,7 @@ app.get('/health', async (req, res) => {
 
 // API routes
 app.use('/auth', authRoutes)
-app.use('/api/auth', authRoutes)
+app.use('/users', userRoutes)
 app.use('/api/protected', protectedRoutes)
 
 app.get('/api', (req, res) => {

@@ -1,11 +1,22 @@
 import { Request, Response, NextFunction } from 'express'
 import { verifyToken, JWTPayload } from '../utils/jwt'
+import { PrismaClient } from '@prisma/client'
+
+const prisma = new PrismaClient()
 
 // Express Request 타입 확장
 declare global {
     namespace Express {
         interface Request {
-            user?: JWTPayload
+            user?: JWTPayload & {
+                dbUser?: {
+                    id: number
+                    name: string
+                    email: string
+                    role: string
+                    emailVerified: boolean
+                }
+            }
         }
     }
 }
@@ -27,11 +38,11 @@ function extractToken(req: Request): string | null {
 }
 
 // JWT 인증 미들웨어
-export function authenticateToken(
+export async function authenticateToken(
     req: Request,
     res: Response,
     next: NextFunction
-): void {
+): Promise<void> {
     try {
         const token = extractToken(req)
 
@@ -58,8 +69,32 @@ export function authenticateToken(
             return
         }
 
+        // Prisma Client로 사용자 정보 조회
+        const dbUser = await prisma.user.findUnique({
+            where: { id: decoded.userId },
+            select: {
+                id: true,
+                name: true,
+                email: true,
+                role: true,
+                emailVerified: true
+            }
+        })
+
+        if (!dbUser) {
+            res.status(401).json({
+                error: 'User not found',
+                message: 'The user associated with this token no longer exists',
+                timestamp: new Date().toISOString()
+            })
+            return
+        }
+
         // 사용자 정보를 request 객체에 추가
-        req.user = decoded
+        req.user = {
+            ...decoded,
+            dbUser
+        }
         next()
     } catch (error) {
         if (error instanceof Error) {
@@ -94,18 +129,35 @@ export function authenticateToken(
 }
 
 // 선택적 인증 미들웨어 (토큰이 있으면 검증, 없어도 통과)
-export function optionalAuth(
+export async function optionalAuth(
     req: Request,
     res: Response,
     next: NextFunction
-): void {
+): Promise<void> {
     try {
         const token = extractToken(req)
 
         if (token) {
             const decoded = verifyToken(token)
             if (decoded.type === 'access') {
-                req.user = decoded
+                // Prisma Client로 사용자 정보 조회
+                const dbUser = await prisma.user.findUnique({
+                    where: { id: decoded.userId },
+                    select: {
+                        id: true,
+                        name: true,
+                        email: true,
+                        role: true,
+                        emailVerified: true
+                    }
+                })
+
+                if (dbUser) {
+                    req.user = {
+                        ...decoded,
+                        dbUser
+                    }
+                }
             }
         }
 
@@ -117,11 +169,11 @@ export function optionalAuth(
 }
 
 // Refresh Token 검증 미들웨어
-export function authenticateRefreshToken(
+export async function authenticateRefreshToken(
     req: Request,
     res: Response,
     next: NextFunction
-): void {
+): Promise<void> {
     try {
         const token = extractToken(req)
 
@@ -146,7 +198,31 @@ export function authenticateRefreshToken(
             return
         }
 
-        req.user = decoded
+        // Prisma Client로 사용자 정보 조회
+        const dbUser = await prisma.user.findUnique({
+            where: { id: decoded.userId },
+            select: {
+                id: true,
+                name: true,
+                email: true,
+                role: true,
+                emailVerified: true
+            }
+        })
+
+        if (!dbUser) {
+            res.status(401).json({
+                error: 'User not found',
+                message: 'The user associated with this token no longer exists',
+                timestamp: new Date().toISOString()
+            })
+            return
+        }
+
+        req.user = {
+            ...decoded,
+            dbUser
+        }
         next()
     } catch (error) {
         if (error instanceof Error) {

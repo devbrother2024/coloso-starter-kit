@@ -1,6 +1,7 @@
 import { Router } from 'express'
 import { AuthController } from '../controllers/auth.controller'
 import { validate } from '../middleware/validate'
+import { authenticateRefreshToken, authenticateToken } from '../middleware/auth'
 import {
     loginSchema,
     registerSchema,
@@ -86,5 +87,15 @@ router.post(
         })
     }
 )
+
+// 토큰 갱신
+router.post('/refresh', authenticateRefreshToken, (req, res) => {
+    authController.refresh(req, res)
+})
+
+// 로그아웃
+router.post('/signout', authenticateToken, (req, res) => {
+    authController.signOut(req, res)
+})
 
 export default router

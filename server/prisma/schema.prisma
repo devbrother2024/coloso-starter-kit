@@ -265,7 +265,6 @@ model VoucherUsageHistory {
   @@map("voucher_usage_histories")
 }
 
-
 model Enrollment {
   id                Int      @id @default(autoincrement())
   state             String   @default("ONGOING")

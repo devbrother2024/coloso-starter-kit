@@ -146,6 +146,62 @@ export class AuthController {
             })
         }
     }
+
+    async refresh(req: Request, res: Response) {
+        try {
+            if (!req.user) {
+                return sendError(res, createAuthError('Invalid refresh token'))
+            }
+
+            // DB에서 사용자 존재 여부 재확인 (미들웨어에서 이미 확인하지만 추가 보안)
+            const user = await this.authService.getUserById(req.user.userId)
+            if (!user) {
+                return sendError(res, createAuthError('User not found'))
+            }
+
+            // 새로운 토큰 쌍 생성
+            const tokens = generateTokenPair({
+                userId: req.user.userId,
+                email: req.user.email
+            })
+
+            return sendSuccess(res, tokens, 'Token refreshed successfully')
+        } catch (error: any) {
+            return sendError(res, {
+                code: 500,
+                message: 'Internal server error',
+                cause: 'TOKEN_REFRESH_ERROR',
+                details: error.message
+            })
+        }
+    }
+
+    async signOut(req: Request, res: Response) {
+        try {
+            if (!req.user) {
+                return sendError(
+                    res,
+                    createAuthError('Authentication required')
+                )
+            }
+
+            // 토큰 블랙리스트는 구현하지 않으므로 클라이언트에게 토큰 삭제 지시
+            const result = {
+                instruction: 'Please remove the tokens from client storage',
+                userId: req.user.userId,
+                loggedOutAt: new Date().toISOString()
+            }
+
+            return sendSuccess(res, result, 'Logout successful')
+        } catch (error: any) {
+            return sendError(res, {
+                code: 500,
+                message: 'Internal server error',
+                cause: 'SIGNOUT_ERROR',
+                details: error.message
+            })
+        }
+    }
 }
 
 export const registerHandler = async (req: Request, res: Response) => {

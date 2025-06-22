@@ -85,3 +85,25 @@ export const confirmEmailSecretCode = async ({ code, email }: TypeConfirmEmailSe
 
   return await http.post('/auth/signup/email-secret-confirm', params);
 };
+
+export const refresh = async () => {
+  try {
+    const { data } = await http.post('/auth/refresh', {});
+    return data;
+  } catch (err) {
+    const error = err as Error;
+    logger.warn('failed to refresh token', error?.message);
+    throw error;
+  }
+};
+
+export const signOut = async () => {
+  try {
+    const { data } = await http.post('/auth/signout', {});
+    return data;
+  } catch (err) {
+    const error = err as Error;
+    logger.warn('failed to sign out', error?.message);
+    throw error;
+  }
+};
