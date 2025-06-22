@@ -1,7 +1,7 @@
 import app from './app'
 import { connectDatabase, disconnectDatabase } from './config/database'
 
-const PORT = process.env.PORT || 5000
+const PORT = process.env.PORT || 5001
 
 // Initialize database connection and start server
 async function startServer() {
@@ -11,12 +11,14 @@ async function startServer() {
 
         // Start the server
         const server = app.listen(PORT, () => {
-            console.log(`🚀 Server is running on port ${PORT}`)
+            console.log(`🚀 Express API Server is running on port ${PORT}`)
             console.log(`📊 Health check: http://localhost:${PORT}/health`)
             console.log(`🔗 API endpoint: http://localhost:${PORT}/api`)
+            console.log(`🔐 Auth endpoints: http://localhost:${PORT}/api/auth`)
             console.log(
                 `🌍 Environment: ${process.env.NODE_ENV || 'development'}`
             )
+            console.log(`🔄 Ready for hybrid client integration`)
         })
 
         // Handle graceful shutdown

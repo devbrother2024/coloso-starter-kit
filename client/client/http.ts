@@ -1,5 +1,12 @@
-import { apiServer } from '@/client/policy';
+import { getApiUrl, shouldUseExpressApi, debugLog } from '@/config/api';
 import { cache } from '@/policy/site';
+import {
+  ApiResponse,
+  normalizeMockResponse,
+  normalizeExpressResponse,
+  createErrorResponse,
+  ApiError,
+} from '@/types/api';
 
 interface fetchType {
   url: string;
@@ -16,42 +23,74 @@ const getToken = () => {
   return import('./auth').then((module) => module.getLocalToken());
 };
 
-const fallbackError = {
+const fallbackError: ApiError = {
   code: 500,
   message: 'INTERNAL SERVER ERROR',
   cause: 'UNKNOWN ERROR',
 };
 
-const _fetch = async ({ url, options, params }: fetchType) => {
+const _fetch = async ({ url, options, params }: fetchType): Promise<ApiResponse> => {
   const token = await getToken();
   const query = params ? `?` + new URLSearchParams(params) : ''; // dynamic typing
-  const input = `${apiServer}${url}${query}`;
 
-  /*
-   * TODO: Set authHeader in productuion
-   * const authHeader = token ? { authorization: `bearer ${token}` } : {};
-   * options?.headers && Object.assign(options?.headers, authHeader);
-   * */
+  // 하이브리드 구조: 엔드포인트에 따라 API 서버 결정
+  const baseUrl = getApiUrl(url);
+  const input = `${baseUrl}${url}${query}`;
+  const useExpressApi = shouldUseExpressApi(url);
 
-  return fetch(input, { ...options }).then((response: Response) => {
+  debugLog(`API Request: ${url}`, {
+    baseUrl,
+    fullUrl: input,
+    useExpress: useExpressApi,
+    params: params,
+  });
+
+  // Express API 사용 시 인증 헤더 추가
+  const authHeader: Record<string, string> = token && useExpressApi ? { authorization: `Bearer ${token}` } : {};
+
+  // 기본 헤더와 인증 헤더 병합
+  const headers: Record<string, string> = {
+    ...((options?.headers as Record<string, string>) || {}),
+    ...authHeader,
+  };
+
+  const requestOptions: RequestInit = {
+    ...options,
+    headers,
+  };
+
+  return fetch(input, requestOptions).then((response: Response) => {
     return response.text().then((text) => {
-      if (!text) return;
+      debugLog(`API Response: ${url}`, {
+        status: response.status,
+        ok: response.ok,
+        responseText: text.substring(0, 200) + (text.length > 200 ? '...' : ''),
+      });
+
+      if (!text) {
+        return useExpressApi ? normalizeExpressResponse(null) : normalizeMockResponse(null);
+      }
 
       try {
         const data = JSON.parse(text);
+
         if (!response.ok) {
           const error = data.error ?? fallbackError;
-          return Promise.reject(error);
+          debugLog(`API Error: ${url}`, error);
+          return Promise.reject(createErrorResponse(error));
         }
-        return data;
+
+        // 응답 정규화: Mock API vs Express API
+        return useExpressApi ? normalizeExpressResponse(data) : normalizeMockResponse(data);
       } catch (err) {
-        return Promise.reject(fallbackError);
+        debugLog(`JSON Parse Error: ${url}`, err);
+        return Promise.reject(createErrorResponse(fallbackError));
       }
     });
   });
 };
 
-const _get = (url: string, params?: [string, string][], options?: Record<string, string>) => {
+const _get = (url: string, params?: [string, string][], options?: Record<string, string>): Promise<ApiResponse> => {
   const _options = {
     method: 'GET',
     headers: {},
@@ -61,7 +100,7 @@ const _get = (url: string, params?: [string, string][], options?: Record<string,
   return _fetch({ url, params, options: _options });
 };
 
-const _post = (url: string, body: {}) => {
+const _post = (url: string, body: {}): Promise<ApiResponse> => {
   const options = {
     method: 'POST',
     body: JSON.stringify(body),
@@ -71,7 +110,7 @@ const _post = (url: string, body: {}) => {
   return _fetch({ url, options });
 };
 
-const _put = (url: string, body: {}) => {
+const _put = (url: string, body: {}): Promise<ApiResponse> => {
   const options = {
     method: 'PUT',
     body: JSON.stringify(body),
@@ -81,7 +120,7 @@ const _put = (url: string, body: {}) => {
   return _fetch({ url, options });
 };
 
-const _delete = (url: string) => {
+const _delete = (url: string): Promise<ApiResponse> => {
   const options = {
     method: 'DELETE',
     headers: {},

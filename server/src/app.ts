@@ -37,10 +37,25 @@ const limiter = rateLimit({
 
 app.use(limiter)
 
-// CORS configuration
+// CORS configuration - 클라이언트 하이브리드 구조 지원
+const allowedOrigins = [
+    'http://localhost:8089', // Next.js 클라이언트
+    'http://localhost:8080', // Mock API 서버
+    process.env.CORS_ORIGIN
+].filter(Boolean)
+
 app.use(
     cors({
-        origin: process.env.CORS_ORIGIN || 'http://localhost:8080',
+        origin: (origin, callback) => {
+            // Allow requests with no origin (like mobile apps, Postman, etc.)
+            if (!origin) return callback(null, true)
+
+            if (allowedOrigins.includes(origin)) {
+                callback(null, true)
+            } else {
+                callback(new Error('Not allowed by CORS'))
+            }
+        },
         credentials: true,
         methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
         allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
@@ -83,6 +98,7 @@ app.get('/health', async (req, res) => {
 })
 
 // API routes
+app.use('/auth', authRoutes)
 app.use('/api/auth', authRoutes)
 app.use('/api/protected', protectedRoutes)
 

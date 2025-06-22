@@ -12,7 +12,7 @@ import type { Prisma } from '@prisma/client';
 
 export const TransactionIsolationLevelSchema = z.enum(['Serializable']);
 
-export const UserScalarFieldEnumSchema = z.enum(['id','name','email','password','role','maskedEmail','phone','language','country','postalCode','address','addressExtra','phoneCertifiedAt','emailMarketingAgreedAt','phoneMarketingAgreedAt','createdAt','updatedAt']);
+export const UserScalarFieldEnumSchema = z.enum(['id','name','email','username','password','role','emailVerified','maskedEmail','phone','language','country','postalCode','address','addressExtra','metadata','phoneCertifiedAt','emailMarketingAgreedAt','phoneMarketingAgreedAt','createdAt','updatedAt']);
 
 export const CourseScalarFieldEnumSchema = z.enum(['id','title','publicTitle','publicDescription','description','state','slug','instructor','keywords','qualification','clipCount','runningTime','paidPeriod','openAt','desktopCoverImage','mobileCoverImage','desktopCardAsset','coverVideo','createdAt','updatedAt','categoryId']);
 
@@ -73,7 +73,9 @@ export const UserSchema = z.object({
   id: z.number().int(),
   name: z.string(),
   email: z.string(),
+  username: z.string().nullable(),
   password: z.string(),
+  emailVerified: z.boolean(),
   maskedEmail: z.string().nullable(),
   phone: z.string().nullable(),
   language: z.string().nullable(),
@@ -81,6 +83,7 @@ export const UserSchema = z.object({
   postalCode: z.string().nullable(),
   address: z.string().nullable(),
   addressExtra: z.string().nullable(),
+  metadata: z.string().nullable(),
   phoneCertifiedAt: z.coerce.date().nullable(),
   emailMarketingAgreedAt: z.coerce.date().nullable(),
   phoneMarketingAgreedAt: z.coerce.date().nullable(),

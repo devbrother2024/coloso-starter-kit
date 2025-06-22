@@ -1,6 +1,131 @@
 import { Request, Response } from 'express'
 import { registerUser, loginUser } from '../services/auth.service'
 import { generateTokenPair } from '../utils/jwt'
+import { AuthService } from '../services/auth.service'
+import {
+    sendSuccess,
+    sendError,
+    createValidationError,
+    createAuthError
+} from '../utils/response'
+
+export class AuthController {
+    private authService: AuthService
+
+    constructor() {
+        this.authService = new AuthService()
+    }
+
+    async signUp(req: Request, res: Response) {
+        try {
+            const {
+                email,
+                password,
+                name,
+                username,
+                emailCertified,
+                country,
+                language,
+                clientId,
+                extras
+            } = req.body
+
+            // 필수 필드 검증
+            if (!email || !password || !name) {
+                return sendError(
+                    res,
+                    createValidationError(
+                        'Email, password, and name are required'
+                    )
+                )
+            }
+
+            // 추가 데이터 구성
+            const additionalData = {
+                username,
+                emailCertified,
+                country,
+                language,
+                clientId,
+                extras
+            }
+
+            const result = await this.authService.signUp(
+                email,
+                password,
+                name,
+                additionalData
+            )
+
+            return sendSuccess(res, result, 'User registered successfully', 201)
+        } catch (error: any) {
+            if (error.message === 'User already exists') {
+                return sendError(
+                    res,
+                    createValidationError('User already exists')
+                )
+            }
+
+            return sendError(res, {
+                code: 500,
+                message: 'Internal server error',
+                cause: 'SIGNUP_ERROR',
+                details: error.message
+            })
+        }
+    }
+
+    async signIn(req: Request, res: Response) {
+        try {
+            const { email, password } = req.body
+
+            if (!email || !password) {
+                return sendError(
+                    res,
+                    createValidationError('Email and password are required')
+                )
+            }
+
+            const result = await this.authService.signIn(email, password)
+
+            return sendSuccess(res, result, 'Sign in successful')
+        } catch (error: any) {
+            if (error.message === 'Invalid credentials') {
+                return sendError(
+                    res,
+                    createValidationError('Invalid email or password')
+                )
+            }
+
+            return sendError(res, {
+                code: 500,
+                message: 'Internal server error',
+                cause: 'SIGNIN_ERROR',
+                details: error.message
+            })
+        }
+    }
+
+    async getProfile(req: Request, res: Response) {
+        try {
+            const userId = (req as any).user.id
+            const user = await this.authService.getUserById(userId)
+
+            if (!user) {
+                return sendError(res, createAuthError('User not found'))
+            }
+
+            return sendSuccess(res, user, 'Profile retrieved successfully')
+        } catch (error: any) {
+            return sendError(res, {
+                code: 500,
+                message: 'Internal server error',
+                cause: 'PROFILE_ERROR',
+                details: error.message
+            })
+        }
+    }
+}
 
 export const registerHandler = async (req: Request, res: Response) => {
     try {

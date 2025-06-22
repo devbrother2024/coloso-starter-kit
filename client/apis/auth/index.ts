@@ -31,7 +31,12 @@ interface TypeSubmitResetPassword {
 
 export const signIn = async (account: TypeSignIn) => {
   try {
-    const { data } = await http.get('/auth/signin');
+    const params = {
+      email: account.username,
+      password: account.password,
+    };
+
+    const { data } = await http.post('/auth/signin', params);
     return data;
   } catch (err) {
     const error = err as Error;

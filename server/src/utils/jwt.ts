@@ -34,6 +34,7 @@ export const TOKEN_EXPIRES = {
 export interface JWTPayload {
     userId: number
     email: string
+    name?: string // 사용자 이름 필드 추가 (선택적)
     type: 'access' | 'refresh'
     iat?: number
     exp?: number
