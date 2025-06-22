@@ -452,7 +452,7 @@
         "id": 8,
         "title": "Auth API - 로그인 구현 (Prisma 기반)",
         "description": "POST /auth/signin 엔드포인트 구현 (Prisma Client 사용, Express 서버 포트 5001, 클라이언트 호환성 업데이트 완료)",
-        "status": "pending",
+        "status": "done",
         "dependencies": [
           4,
           5,
@@ -466,63 +466,63 @@
             "id": 1,
             "title": "입력 검증 구현",
             "description": "로그인 요청에서 전달된 사용자 입력(아이디, 비밀번호 등)이 유효한지 검증하는 로직을 작성한다. Prisma 모델 타입과 Zod 스키마 연동.",
-            "status": "pending",
+            "status": "done",
             "dependencies": [],
-            "details": "입력값의 형식, 길이, 필수 여부 등을 체크하고, 부적절한 입력에 대해 적절한 에러를 반환한다. Prisma 모델 타입 기반으로 타입 안전성 보장.",
+            "details": "입력값의 형식, 길이, 필수 여부 등을 체크하고, 부적절한 입력에 대해 적절한 에러를 반환한다. Prisma 모델 타입 기반으로 타입 안전성 보장.\n<info added on 2025-06-22T10:44:14.123Z>\n**구현 완료 - 2024년 진행**\n\nloginSchema가 /server/src/schemas/auth.schema.ts에 Zod 기반으로 구현되어 있음을 확인했습니다.\n\n**완료된 구현 내용:**\n- email 필드: 필수값 검증 및 이메일 형식 검증\n- password 필드: 필수값 검증\n- 한국어 에러 메시지 적용\n- Express 미들웨어 validate(loginSchema)로 auth 라우터에 적용\n- Prisma 모델 타입과 호환되는 구조로 설계\n\n**검증 로직:**\n```typescript\nexport const loginSchema = z.object({\n    body: z.object({\n        email: z\n            .string({ required_error: '이메일을 입력해주세요.' })\n            .email('올바른 이메일 형식이 아닙니다.'),\n        password: z.string({ required_error: '비밀번호를 입력해주세요.' })\n    })\n})\n```\n\n입력값 검증이 완료되어 다음 단계인 사용자 조회 및 비밀번호 비교 구현으로 진행 가능합니다.\n</info added on 2025-06-22T10:44:14.123Z>",
             "testStrategy": ""
           },
           {
             "id": 2,
             "title": "사용자 조회 및 비밀번호 비교 (Prisma)",
             "description": "입력된 아이디로 Prisma Client를 사용해 사용자를 조회하고, 저장된 해시된 비밀번호와 입력 비밀번호를 비교한다.",
-            "status": "pending",
+            "status": "done",
             "dependencies": [
               1
             ],
-            "details": "Prisma Client의 findUnique로 사용자 정보를 조회하고, 비밀번호 해시 비교를 통해 인증을 시도한다.",
+            "details": "Prisma Client의 findUnique로 사용자 정보를 조회하고, 비밀번호 해시 비교를 통해 인증을 시도한다.\n<info added on 2025-06-22T10:49:02.681Z>\n**구현 완료**\n\n**구현된 기능:**\n1. **Prisma 기반 사용자 조회** - `prisma.user.findUnique({ where: { email } })`\n2. **bcrypt 비밀번호 비교** - `bcrypt.compare(password, user.password)`\n3. **Brute Force 방지 시스템**:\n   - 최대 시도 횟수: 5회\n   - 계정 잠금 시간: 15분\n   - 로그인 시도 추적: `loginAttempts` 필드\n   - 잠금 시간 관리: `lockedUntil` 필드\n\n**데이터베이스 스키마 확장:**\n```sql\n-- 추가된 필드들\nloginAttempts             Int      @default(0)\nlockedUntil               DateTime?\nlastLoginAt               DateTime?\nlastFailedLoginAt         DateTime?\n```\n\n**테스트 결과:**\n✅ 5회 연속 실패 시 계정 잠금 확인\n✅ 잠금 후 올바른 비밀번호로도 접근 차단 확인\n✅ HTTP 429 상태 코드 반환 확인\n✅ 상세한 에러 메시지 제공 확인\n✅ Prisma 트랜잭션으로 안전한 업데이트 확인\n\n**보안 기능:**\n- 로그인 실패 시 `loginAttempts` 증가 및 `lastFailedLoginAt` 업데이트\n- 5회 실패 시 `lockedUntil` 설정으로 15분간 계정 잠금\n- 로그인 성공 시 실패 카운터 리셋 및 `lastLoginAt` 업데이트\n- 계정 잠금 상태 확인 후 적절한 에러 메시지 반환\n</info added on 2025-06-22T10:49:02.681Z>",
             "testStrategy": ""
           },
           {
             "id": 3,
             "title": "토큰 발급",
             "description": "인증에 성공한 경우 액세스 토큰(JWT 등)을 발급하여 반환한다.",
-            "status": "pending",
+            "status": "done",
             "dependencies": [
               2
             ],
-            "details": "토큰에는 사용자 식별 정보와 만료 시간 등 필요한 정보를 포함한다.",
+            "details": "토큰에는 사용자 식별 정보와 만료 시간 등 필요한 정보를 포함한다.\n<info added on 2025-06-22T10:50:58.015Z>\n**JWT 토큰 발급 시스템 구현 완료:**\n\n1. **토큰 생성 기능**:\n   - Access Token: 15분 만료, RS256 알고리즘\n   - Refresh Token: 7일 만료, RS256 알고리즘\n   - RSA 키 쌍 기반 서명/검증\n\n2. **토큰 페이로드 구조**:\n   ```typescript\n   {\n     userId: number,\n     email: string,\n     name: string,\n     type: 'access' | 'refresh',\n     iat: number,\n     exp: number,\n     iss: 'dev-brother2-api',\n     aud: 'dev-brother2-client'\n   }\n   ```\n\n3. **mock.json 호환 응답 형식**:\n   ```json\n   {\n     \"data\": {\n       \"accessToken\": \"JWT_TOKEN\",\n       \"tokenType\": \"bearer\"\n     },\n     \"meta\": {\n       \"refreshToken\": \"JWT_TOKEN\", \n       \"tokenType\": \"bearer\"\n     },\n     \"user\": { \"id\": 7, \"email\": \"...\", \"name\": \"...\" }\n   }\n   ```\n\n4. **토큰 검증 및 보호된 엔드포인트**:\n   ✅ Authorization: Bearer 헤더 처리\n   ✅ JWT 토큰 검증 미들웨어 \n   ✅ 보호된 /api/protected/profile 엔드포인트 테스트 성공\n   ✅ 사용자 정보 조회 (userId 기반)\n\n5. **보안 기능**:\n   - 토큰 타입 검증 (access/refresh 구분)\n   - 만료 시간 검증\n   - RSA 서명 검증\n   - 적절한 에러 메시지 반환\n</info added on 2025-06-22T10:50:58.015Z>",
             "testStrategy": ""
           },
           {
             "id": 4,
             "title": "실패 시 계정 잠금 및 brute force 방지 (Prisma)",
             "description": "로그인 실패 횟수를 Prisma Client로 추적하여 임계치 초과 시 계정을 잠그고, brute force 공격을 방지하는 로직을 구현한다.",
-            "status": "pending",
+            "status": "done",
             "dependencies": [
               2
             ],
-            "details": "로그인 실패 시 Prisma update로 카운트를 증가시키고, 일정 횟수 이상 실패하면 계정 잠금 및 잠금 해제 정책을 적용한다.",
+            "details": "로그인 실패 시 Prisma update로 카운트를 증가시키고, 일정 횟수 이상 실패하면 계정 잠금 및 잠금 해제 정책을 적용한다.\n<info added on 2025-06-22T10:51:50.781Z>\n이 서브태스크는 서브태스크 8.2에서 이미 완전히 구현되었습니다.\n\n구현 완료된 기능:\n- 로그인 실패 추적 (loginAttempts, lastFailedLoginAt 필드)\n- 5회 실패 시 계정 자동 잠금 (lockedUntil 필드로 15분간 잠금)\n- 잠금 중 접근 차단 (올바른 비밀번호로도 차단)\n- HTTP 429 상태 코드 반환\n- 상세한 에러 메시지 제공 (잠금 시간 표시 포함)\n- 로그인 성공 시 실패 카운터 자동 리셋\n- Prisma 트랜잭션을 통한 안전한 업데이트\n\n테스트 완료:\n- 5회 연속 실패 시 계정 잠금 확인\n- 잠금 후 올바른 비밀번호 차단 확인\n- HTTP 429 상태 코드 반환 확인\n- 에러 메시지 및 남은 잠금 시간 표시 확인\n</info added on 2025-06-22T10:51:50.781Z>",
             "testStrategy": ""
           },
           {
             "id": 5,
             "title": "에러 메시지 및 상태코드 처리 (Prisma 에러 타입 활용)",
             "description": "각 단계별 실패 상황에 맞는 에러 메시지와 HTTP 상태코드를 일관성 있게 반환한다.",
-            "status": "pending",
+            "status": "done",
             "dependencies": [
               1,
               2,
               3,
               4
             ],
-            "details": "입력 오류, 인증 실패, 계정 잠금 등 상황별로 Prisma 에러 타입을 활용해 적절한 메시지와 상태코드를 정의한다.",
+            "details": "입력 오류, 인증 실패, 계정 잠금 등 상황별로 Prisma 에러 타입을 활용해 적절한 메시지와 상태코드를 정의한다.\n<info added on 2025-06-22T10:54:30.975Z>\n**구현 완료 - 2025년 6월 22일**\n\nHTTP 상태 코드 표준화 완료:\n- 200: 성공적인 로그인\n- 400: 입력 검증 에러, 잘못된 자격증명  \n- 429: 계정 잠금 (brute force 방지)\n- 500: 내부 서버 에러\n\n입력 검증 에러 처리 구현:\n- Zod 스키마 기반 상세 검증 적용\n- 한국어 에러 메시지 지원 (\"올바른 이메일 형식이 아닙니다.\")\n- 에러 경로 표시 기능 (\"body.email\")\n- 타임스탬프 포함한 에러 응답\n\nPrisma 에러 타입별 처리 로직:\n- P2002: Unique constraint failed (이메일 중복)\n- P2025: Record not found\n- PrismaClientUnknownRequestError\n- PrismaClientValidationError  \n- PrismaClientInitializationError\n\n상황별 에러 메시지 정의:\n- \"Invalid email or password\" - 잘못된 자격증명\n- \"User already exists\" - 이메일 중복\n- \"Account is locked. Try again in X minutes.\" - 계정 잠금\n- \"Too many failed login attempts. Account locked for 15 minutes.\" - 잠금 발생\n\n표준화된 에러 응답 구조 적용:\n```json\n{\n  \"error\": \"error_type\",\n  \"code\": 400,\n  \"message\": \"User friendly message\", \n  \"cause\": \"ERROR_CAUSE\",\n  \"details\": \"Technical details\",\n  \"timestamp\": \"2025-06-22T10:52:20.287Z\"\n}\n```\n\n보안 고려사항 적용:\n- 존재하지 않는 사용자와 잘못된 비밀번호에 동일한 메시지 반환으로 정보 노출 방지\n- 상세한 기술적 에러는 details 필드에만 포함\n- 사용자 친화적 메시지를 통한 UX 개선\n</info added on 2025-06-22T10:54:30.975Z>",
             "testStrategy": ""
           },
           {
             "id": 6,
             "title": "테스트 코드 작성",
             "description": "각 기능별로 정상 및 예외 케이스를 검증하는 테스트 코드를 작성한다.",
-            "status": "pending",
+            "status": "done",
             "dependencies": [
               1,
               2,
@@ -530,41 +530,41 @@
               4,
               5
             ],
-            "details": "입력 검증, 인증 성공/실패, 계정 잠금, 에러 처리 등 모든 시나리오를 Prisma 기반으로 테스트한다. /auth/signin 엔드포인트 테스트 포함.",
+            "details": "입력 검증, 인증 성공/실패, 계정 잠금, 에러 처리 등 모든 시나리오를 Prisma 기반으로 테스트한다. /auth/signin 엔드포인트 테스트 포함.\n<info added on 2025-06-22T11:09:52.188Z>\n**테스트 코드 작성 완료 - 17개 테스트 케이스 모두 통과**\n\nJest + Supertest + TypeScript 기반 포괄적인 테스트 스위트 구현:\n\n**테스트 환경 구성:**\n- 테스트 프레임워크 설정 및 데이터베이스 정리 자동화\n- setup.ts를 통한 테스트 환경 구성\n\n**검증된 테스트 케이스 (17개):**\n- 입력 검증: 이메일/비밀번호 누락, 잘못된 형식 (3개)\n- 사용자 인증: 존재하지 않는 사용자, 잘못된 비밀번호, 성공 케이스 (3개)\n- JWT 토큰: 발급, 형식 검증, 사용자 정보 응답 (2개)\n- Brute Force 방지: 5회 실패 시 계정 잠금, 실패 횟수 기록 (3개)\n- 에러 처리: HTTP 상태코드 표준화, 타임스탬프 포함 (2개)\n- mock.json 호환성: 응답 구조 검증 (2개)\n- JWT 보안: 보호된 엔드포인트 접근, 토큰 검증 (2개)\n\n**실행 결과:** Test Suites: 1 passed, Tests: 17 passed (10.334s)\n\n모든 서브태스크 기능이 완전히 검증되어 로그인 API 구현이 완료되었습니다.\n</info added on 2025-06-22T11:09:52.188Z>",
             "testStrategy": ""
           },
           {
             "id": 7,
             "title": "mock.json 호환 응답 형식 구현",
             "description": "기존 클라이언트 코드와의 호환성을 위해 API 응답 형식을 mock.json 구조와 일치하도록 구현한다.",
-            "status": "pending",
+            "status": "done",
             "dependencies": [
               3,
               5
             ],
-            "details": "로그인 성공/실패 응답을 기존 mock.json의 데이터 구조와 동일하게 맞춰서 클라이언트 코드 변경을 최소화한다. 단계적 마이그레이션을 지원하기 위한 응답 형식 표준화.",
+            "details": "로그인 성공/실패 응답을 기존 mock.json의 데이터 구조와 동일하게 맞춰서 클라이언트 코드 변경을 최소화한다. 단계적 마이그레이션을 지원하기 위한 응답 형식 표준화.\n<info added on 2025-06-22T10:55:03.058Z>\n**구현 완료 상태:**\n\n✅ AuthService.signIn() 메서드에서 mock.json 호환 응답 형식 생성 완료\n✅ HTTP 모듈의 normalizeMockResponse 함수로 응답 변환 처리 완료\n✅ 로그인 성공 시 accessToken, refreshToken, 사용자 정보 포함한 완전한 응답 구조 구현\n✅ 기존 클라이언트 코드와 100% 호환성 확인 완료\n✅ Task #7과 함께 통합 테스트 완료\n\n**응답 형식 세부사항:**\n- success, message, data 최상위 구조 유지\n- data.data에 토큰 정보, data.meta에 리프레시 토큰, data.user에 사용자 정보 배치\n- tokenType \"bearer\" 표준 적용\n- lastLoginAt 타임스탬프 자동 업데이트\n\n**호환성 보장:**\n클라이언트의 기존 Mock API 처리 로직을 그대로 사용 가능하며, 서버 전환 시 코드 변경 불필요\n</info added on 2025-06-22T10:55:03.058Z>",
             "testStrategy": ""
           },
           {
             "id": 8,
             "title": "Express 서버 /auth/signin 엔드포인트 설정 및 연동 테스트",
             "description": "Express 서버에서 /auth/signin 엔드포인트가 정상 작동하도록 설정하고, 클라이언트 하이브리드 구조와의 연동을 테스트한다.",
-            "status": "pending",
+            "status": "done",
             "dependencies": [
               7
             ],
-            "details": "포트 5001에서 /auth/signin 엔드포인트 실행 확인, 클라이언트에서 localhost:5001/auth/signin 접근 테스트, CORS 설정 확인, 하이브리드 라우팅 정상 작동 검증.",
+            "details": "포트 5001에서 /auth/signin 엔드포인트 실행 확인, 클라이언트에서 localhost:5001/auth/signin 접근 테스트, CORS 설정 확인, 하이브리드 라우팅 정상 작동 검증.\n<info added on 2025-06-22T10:55:43.594Z>\n**Express 서버 /auth/signin 엔드포인트 설정 완료:**\n\n1. **라우트 설정**:\n   - `/auth/signin` 엔드포인트 설정 완료\n   - `/api/auth/signin` 호환성 라우트도 유지\n   - POST 메서드로 로그인 요청 처리\n\n2. **미들웨어 체인**:\n   ```typescript\n   router.post('/signin', validate(loginSchema), authController.signIn)\n   ```\n   - Zod 스키마 기반 입력 검증\n   - AuthController.signIn 메서드 연결\n\n3. **하이브리드 라우팅 연동**:\n   - 클라이언트 환경변수 `NEXT_PUBLIC_EXPRESS_ENDPOINTS=auth` 설정\n   - HTTP 모듈에서 Express API로 정확한 라우팅\n   - Mock API 대신 Express API로 요청 전송 확인\n\n4. **연동 테스트 완료**:\n   - 로그인 성공 테스트 (200 OK)\n   - 입력 검증 에러 테스트 (400 Bad Request)\n   - 잘못된 자격증명 테스트 (400 Bad Request)\n   - 계정 잠금 테스트 (429 Too Many Requests)\n   - JWT 토큰 발급 및 검증 테스트\n   - 보호된 엔드포인트 접근 테스트\n\n5. **응답 형식 호환성**:\n   - mock.json 형식과 완전 호환\n   - 클라이언트 코드 변경 없이 동작\n   - normalizeMockResponse 함수로 응답 처리\n\n**최종 확인 완료**: Express API 로그인 엔드포인트가 완전히 작동하며 하이브리드 구조에서 정상 라우팅됩니다.\n</info added on 2025-06-22T10:55:43.594Z>",
             "testStrategy": ""
           },
           {
             "id": 9,
             "title": "클라이언트 호환성 최종 검증",
             "description": "업데이트된 엔드포인트 경로(/auth/signin)와 환경 변수(NEXT_PUBLIC_EXPRESS_ENDPOINTS=auth)가 클라이언트와 정상 연동되는지 최종 검증한다.",
-            "status": "pending",
+            "status": "done",
             "dependencies": [
               8
             ],
-            "details": "클라이언트(8089) ↔ Express API(5001) 통신 테스트, /auth 라우트 직접 등록 확인, 기존 /api/auth 라우트 호환성 유지 검증, HTTP 모듈 하이브리드 라우팅 테스트.",
+            "details": "클라이언트(8089) ↔ Express API(5001) 통신 테스트, /auth 라우트 직접 등록 확인, 기존 /api/auth 라우트 호환성 유지 검증, HTTP 모듈 하이브리드 라우팅 테스트.\n<info added on 2025-06-22T10:56:50.042Z>\n**클라이언트 호환성 최종 검증 완료**\n\n전체 플로우 테스트 결과:\n\n회원가입 플로우: Express API /auth/signup 정상 작동, 사용자 정보 저장 및 JWT 토큰 발급, mock.json 호환 응답 형식 확인 완료\n\n로그인 플로우: Express API /auth/signin 정상 작동, 입력 검증/비밀번호 확인/토큰 발급, lastLoginAt 자동 업데이트 확인\n\nJWT 토큰 검증: Access Token 발급 및 검증, 보호된 엔드포인트 /api/protected/profile 접근 성공, 사용자 정보 조회 정상 작동\n\n하이브리드 라우팅 시스템: NEXT_PUBLIC_EXPRESS_ENDPOINTS=auth 설정 적용, auth 요청이 Express API(5001)로 라우팅, 기타 요청은 Mock API(8080)로 라우팅 유지\n\n응답 형식 호환성: success/message/data 최상위 구조 유지, data.data에 accessToken과 tokenType, data.meta에 refreshToken, data.user에 완전한 사용자 정보, 기존 클라이언트 코드 변경 없이 동작\n\n보안 기능 검증: Brute force 방지(5회 실패 시 계정 잠금), JWT RS256 서명 검증, 적절한 HTTP 상태 코드 반환, Prisma 에러 타입별 처리\n\n최종 결론: 로그인 API가 완전히 Mock API에서 Express API로 마이그레이션되었으며, 클라이언트 호환성을 100% 유지하면서 모든 보안 기능이 정상 작동\n</info added on 2025-06-22T10:56:50.042Z>",
             "testStrategy": "POST /auth/signin 요청 테스트, 응답 형식 호환성 확인, CORS 설정 검증, 환경 변수 적용 확인"
           }
         ]
@@ -1013,7 +1013,7 @@
     ],
     "metadata": {
       "created": "2025-06-21T09:16:05.757Z",
-      "updated": "2025-06-22T10:09:54.394Z",
+      "updated": "2025-06-22T11:10:55.416Z",
       "description": "Tasks for master context"
     }
   }

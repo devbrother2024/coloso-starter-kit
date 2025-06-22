@@ -12,7 +12,7 @@ import type { Prisma } from '@prisma/client';
 
 export const TransactionIsolationLevelSchema = z.enum(['Serializable']);
 
-export const UserScalarFieldEnumSchema = z.enum(['id','name','email','username','password','role','emailVerified','maskedEmail','phone','language','country','postalCode','address','addressExtra','metadata','phoneCertifiedAt','emailMarketingAgreedAt','phoneMarketingAgreedAt','createdAt','updatedAt']);
+export const UserScalarFieldEnumSchema = z.enum(['id','name','email','username','password','role','emailVerified','maskedEmail','phone','language','country','postalCode','address','addressExtra','metadata','phoneCertifiedAt','emailMarketingAgreedAt','phoneMarketingAgreedAt','loginAttempts','lockedUntil','lastLoginAt','lastFailedLoginAt','createdAt','updatedAt']);
 
 export const CourseScalarFieldEnumSchema = z.enum(['id','title','publicTitle','publicDescription','description','state','slug','instructor','keywords','qualification','clipCount','runningTime','paidPeriod','openAt','desktopCoverImage','mobileCoverImage','desktopCardAsset','coverVideo','createdAt','updatedAt','categoryId']);
 
@@ -87,6 +87,10 @@ export const UserSchema = z.object({
   phoneCertifiedAt: z.coerce.date().nullable(),
   emailMarketingAgreedAt: z.coerce.date().nullable(),
   phoneMarketingAgreedAt: z.coerce.date().nullable(),
+  loginAttempts: z.number().int(),
+  lockedUntil: z.coerce.date().nullable(),
+  lastLoginAt: z.coerce.date().nullable(),
+  lastFailedLoginAt: z.coerce.date().nullable(),
   createdAt: z.coerce.date(),
   updatedAt: z.coerce.date(),
 })

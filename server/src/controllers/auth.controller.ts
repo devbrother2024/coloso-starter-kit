@@ -90,6 +90,27 @@ export class AuthController {
 
             return sendSuccess(res, result, 'Sign in successful')
         } catch (error: any) {
+            // 계정 잠금 관련 에러 처리
+            if (error.message.includes('Account is locked')) {
+                return sendError(res, {
+                    code: 429,
+                    message: error.message,
+                    cause: 'ACCOUNT_LOCKED',
+                    details: 'Too many failed login attempts'
+                })
+            }
+
+            // 최대 시도 횟수 초과 에러 처리
+            if (error.message.includes('Too many failed login attempts')) {
+                return sendError(res, {
+                    code: 429,
+                    message: error.message,
+                    cause: 'ACCOUNT_LOCKED',
+                    details: 'Account locked due to excessive failed attempts'
+                })
+            }
+
+            // 잘못된 자격 증명 에러 처리
             if (error.message === 'Invalid credentials') {
                 return sendError(
                     res,
@@ -108,7 +129,7 @@ export class AuthController {
 
     async getProfile(req: Request, res: Response) {
         try {
-            const userId = (req as any).user.id
+            const userId = (req as any).user.userId
             const user = await this.authService.getUserById(userId)
 
             if (!user) {

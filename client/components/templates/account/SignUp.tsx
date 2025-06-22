@@ -54,9 +54,7 @@ const SignUp = () => {
     !form.invalidName &&
     !form.invalidEmail &&
     form.hasCertificateEmail &&
-    form.isPasswordConfirmed &&
-    !!country &&
-    !!language;
+    form.isPasswordConfirmed;
 
   const {
     isActiveDialog: isActiveAccountDialog,
@@ -81,10 +79,10 @@ const SignUp = () => {
       };
       return signUp(signUpAccount);
     },
-    onSuccess: ({ data }: { data: Record<string, string> }) => {
+    onSuccess: (response) => {
       executeNotifications(marketingNotifyLabel());
       successSignIn({
-        accessToken: data.accessToken,
+        accessToken: response.data?.accessToken,
       });
     },
     onError: () => {

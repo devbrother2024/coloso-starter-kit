@@ -79,6 +79,13 @@ model User {
   phoneCertifiedAt          DateTime?
   emailMarketingAgreedAt    DateTime?
   phoneMarketingAgreedAt    DateTime?
+  
+  // 로그인 시도 추적 및 계정 잠금 관련 필드
+  loginAttempts             Int      @default(0)      // 연속 로그인 실패 횟수
+  lockedUntil               DateTime?                 // 계정 잠금 해제 시간
+  lastLoginAt               DateTime?                 // 마지막 성공 로그인 시간
+  lastFailedLoginAt         DateTime?                 // 마지막 실패 로그인 시간
+  
   createdAt                 DateTime @default(now())
   updatedAt                 DateTime @updatedAt
 
